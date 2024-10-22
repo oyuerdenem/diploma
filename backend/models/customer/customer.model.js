@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-
-const phoneNumberRegex = /^[0-9]{8}$/;
+import { phoneNumberRegex } from "../validators";
 
 const customerSchema = new mongoose.Schema(
   {

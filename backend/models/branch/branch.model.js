@@ -1,17 +1,12 @@
 import mongoose from "mongoose";
-
-// Regular expression for validating phone numbers (8 digits)
-const phoneNumberRegex = /^[0-9]{8}$/; // Matches exactly 8 digits
-
-// Regular expression for validating email format
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
+import { emailRegex, phoneNumberRegex } from "../validators";
 
 const branchSchema = new mongoose.Schema(
   {
     branchId: {
       type: Number,
       required: true,
-      unique: true, // Ensure branchId is unique
+      unique: true,
     },
     restaurantId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -21,22 +16,22 @@ const branchSchema = new mongoose.Schema(
     branchName: {
       type: String,
       required: true,
-      minlength: 2, // Minimum length of 2 characters
+      minlength: 2,
     },
     location: {
       type: String,
       required: true,
-      minlength: 5, // Minimum length of 5 characters
+      minlength: 5,
     },
     phoneNumber: {
       type: String,
       required: true,
-      match: [phoneNumberRegex, "Please enter a valid 8-digit phone number"], // Validates phone number format
+      match: [phoneNumberRegex, "Please enter a valid 8-digit phone number"],
     },
     email: {
       type: String,
       required: true,
-      match: [emailRegex, "Please enter a valid email address"], // Validates email format
+      match: [emailRegex, "Please enter a valid email address"],
     },
     operatingHours: {
       openingTime: {
@@ -51,7 +46,7 @@ const branchSchema = new mongoose.Schema(
     capacity: {
       type: Number,
       required: true,
-      min: 1, // Minimum capacity of 1
+      min: 1,
     },
     status: {
       type: String,

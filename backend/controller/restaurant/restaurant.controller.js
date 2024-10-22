@@ -46,11 +46,9 @@ export const createRestaurant = async (req, res) => {
         .json({ success: false, message: "Cuisine not found" });
     }
 
-    // Find the restaurant with the highest ID
     const lastRestaurant = await Restaurant.findOne().sort({ id: -1 });
-    const newId = lastRestaurant ? lastRestaurant.id + 1 : 1; // Start with 1 if no restaurants exist
+    const newId = lastRestaurant ? lastRestaurant.id + 1 : 1; 
 
-    // Create a new restaurant object with auto-generated ID
     const newRestaurant = new Restaurant({
       id: newId,
       name,

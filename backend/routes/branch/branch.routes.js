@@ -5,7 +5,7 @@ import {
   createBranch,
   updateBranch,
   deleteBranch,
-} from "../controller/branch.controller.js";
+} from "../../controller/branch/branch.controller.js";
 
 const router = express.Router();
 

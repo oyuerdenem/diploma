@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import Cuisine from "../../models/cuisine/cuisine.model.js";
 
-// Get all cuisines
 export const getCuisines = async (req, res) => {
   try {
     const cuisines = await Cuisine.find({});
@@ -12,12 +11,10 @@ export const getCuisines = async (req, res) => {
   }
 };
 
-// Create a new cuisine
 export const createCuisine = async (req, res) => {
   const { name, description } = req.body;
 
   try {
-    // Find the highest cuisineId and increment it by 1
     const lastCuisine = await Cuisine.findOne().sort({ cuisineId: -1 });
     const newCuisineId = lastCuisine ? lastCuisine.cuisineId + 1 : 1;
 
@@ -35,7 +32,6 @@ export const createCuisine = async (req, res) => {
   }
 };
 
-// Update an existing cuisine
 export const updateCuisine = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;

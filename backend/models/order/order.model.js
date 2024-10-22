@@ -2,39 +2,39 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
-    orderId: { 
-      type: Number, 
-      required: true, 
-      unique: true, // Ensure orderId is unique
-    }, 
+    orderId: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     customerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Customer",
       required: true,
-    }, 
-    orderDate: { 
-      type: Date, 
-      default: Date.now, 
+    },
+    orderDate: {
+      type: Date,
+      default: Date.now,
       validate: {
-        validator: function(value) {
-          return value <= Date.now(); // Order date must not be in the future
+        validator: function (value) {
+          return value <= Date.now();
         },
-        message: 'Order date cannot be in the future',
+        message: "Order date cannot be in the future",
       },
-    }, 
-    totalAmount: { 
-      type: Number, 
-      required: true, 
-      min: [0, 'Total amount must be a positive number'], // Total amount must be positive
-    }, 
+    },
+    totalAmount: {
+      type: Number,
+      required: true,
+      min: [0, "Total amount must be a positive number"],
+    },
     status: {
       type: String,
-      enum: ["Pending", "Completed", "Cancelled", "Delivered"], 
+      enum: ["Pending", "Completed", "Cancelled", "Delivered"],
       required: true,
     },
-    qrId: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "TableQr" 
+    qrId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "TableQr",
     },
   },
   {

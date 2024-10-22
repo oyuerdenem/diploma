@@ -51,7 +51,6 @@ export const createBranch = async (req, res) => {
   } = req.body;
 
   try {
-    // Step 1: Verify if the restaurantId exists
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
       return res
@@ -59,13 +58,11 @@ export const createBranch = async (req, res) => {
         .json({ success: false, message: "Restaurant not found" });
     }
 
-    // Step 2: Find the highest branchId and increment it
     const lastBranch = await Branch.findOne().sort({ branchId: -1 });
-    const newBranchId = lastBranch ? lastBranch.branchId + 1 : 1; // Start with 1 if no branches exist
+    const newBranchId = lastBranch ? lastBranch.branchId + 1 : 1; 
 
-    // Step 3: Create a new branch with the generated branchId
     const newBranch = new Branch({
-      branchId: newBranchId, // Use the newly generated branchId
+      branchId: newBranchId,
       restaurantId: restaurantId,
       branchName,
       location,
@@ -80,7 +77,6 @@ export const createBranch = async (req, res) => {
       socialMediaLinks,
     });
 
-    // Step 4: Save the new branch
     await newBranch.save();
     res.status(201).json({ success: true, data: newBranch });
   } catch (error) {

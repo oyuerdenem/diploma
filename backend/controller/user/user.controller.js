@@ -1,12 +1,8 @@
-// controllers/userController.js
-
 import User from "../../models/user/user.model.js";
 
-// Function to add a new user (staff)
 export const addUser = async (req, res) => {
   const { username, password, role } = req.body;
 
-  // Check if role is valid
   if (!["admin", "user", "staff"].includes(role)) {
     return res.status(400).json({ message: 'Invalid role specified' });
   }
@@ -14,13 +10,13 @@ export const addUser = async (req, res) => {
   try {
     const newUser = new User({ username, password, role });
     await newUser.save();
-    res.status(201).json(newUser);
+    res.status(200).json({ success: true, newUser});
   } catch (error) {
     res.status(500).json({ message: 'Error adding user', error });
+    console.log(error);
   }
 };
 
-// Function to get all users (could be filtered based on role)
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -30,7 +26,6 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// Function to get a specific user by ID
 export const getUserById = async (req, res) => {
   const { id } = req.params;
 

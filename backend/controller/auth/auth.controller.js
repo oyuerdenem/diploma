@@ -1,40 +1,34 @@
 // controller/auth.controller.js
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Staff from "../../models/staff/staff.model.js"; // Import your Staff model
+import User from "../../models/user/user.model.js";
 
-// Login controller
-export const loginStaff = async (req, res) => {
-  const { name, password } = req.body;
+export const loginUser = async (req, res) => {
+  const { username, password } = req.body;
 
   try {
-    // Find staff by name
-    const staff = await Staff.findOne({ name });
-    if (!staff) {
+    const user = await User.findOne({ username });
+    if (!user) {
       return res
         .status(404)
-        .json({ success: false, message: "Staff not found" });
+        .json({ success: false, message: "User not found" });
     }
 
-    // Check if password matches
-    const isMatch = await bcrypt.compare(password, staff.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res
         .status(401)
         .json({ success: false, message: "Invalid credentials" });
     }
 
-    // Generate JWT token
     const token = jwt.sign(
-      { id: staff._id, role: staff.role },
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       {
-        expiresIn: process.env.JWT_EXPIRATION_TIME, // Token expiration time
+        expiresIn: '10h', 
       }
     );
-    console.log(process.env.JWT_SECRET, process.env.JWT_EXPIRATION_TIME);
-
-    // Return success and token
+    
     res.status(200).json({ success: true, token: `Bearer ${token}` });
   } catch (error) {
     console.error("Error on staff login:", error.message);

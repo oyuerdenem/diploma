@@ -1,30 +1,31 @@
 import mongoose from "mongoose";
-
-// Regular expression for validating menu item names
-const menuItemNameRegex = /^[a-zA-Z0-9\s]{2,50}$/; // Allows alphanumeric characters and spaces, between 2 and 50 characters
+import { menuItemNameRegex } from "../validators";
 
 const menuItemSchema = new mongoose.Schema(
   {
-    menuId: { 
-      type: Number, 
-      required: true, 
-      unique: true // Ensure menuId is unique
-    },
-    name: { 
-      type: String, 
+    menuId: {
+      type: Number,
       required: true,
-      match: [menuItemNameRegex, 'Menu item name must be between 2 and 50 characters long and can contain letters, numbers, and spaces'], // Validates name format
-      minlength: 2, // Minimum length of 2 characters
-      maxlength: 50, // Maximum length of 50 characters
+      unique: true,
     },
-    description: { 
+    name: {
       type: String,
-      maxlength: 200, // Maximum length of 200 characters
+      required: true,
+      match: [
+        menuItemNameRegex,
+        "Menu item name must be between 2 and 50 characters long and can contain letters, numbers, and spaces",
+      ],
+      minlength: 2,
+      maxlength: 50,
     },
-    price: { 
-      type: Number, 
-      required: true, 
-      min: [0, 'Price must be a positive number'], // Price must be positive
+    description: {
+      type: String,
+      maxlength: 200,
+    },
+    price: {
+      type: Number,
+      required: true,
+      min: [0, "Price must be a positive number"],
     },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,

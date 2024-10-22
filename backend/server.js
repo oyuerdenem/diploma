@@ -1,14 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
-import productRoutes from "./routes/product.routes.js";
-import branchRoutes from "./routes/branch.routes.js";
-import restaurantRoutes from "./routes/restaurant.routes.js";
-import cuisineRoutes from "./routes/cuisine.routes.js";
-import staffRoutes from "./routes/staff.routes.js";
+import productRoutes from "./routes/product/product.routes.js";
+import branchRoutes from "./routes/branch/branch.routes.js";
+import restaurantRoutes from "./routes/restaurant/restaurant.routes.js";
+import cuisineRoutes from "./routes/cuisine/cuisine.routes.js";
+import staffRoutes from "./routes/staff/staff.routes.js";
 import { authenticateToken } from "./middlewares/authMiddleware.js";
-import authRouter from "./routes/login.route.js";
-import userRoutes from "./routes/user.routes.js";
+import authRouter from "./routes/auth/auth.route.js";
+import userRoutes from "./routes/user/user.routes.js";
+import tableRoutes from "./routes/table/table.routes.js";
 
 dotenv.config();
 const app = express();
@@ -21,8 +22,9 @@ app.use("/api/restaurants", authenticateToken, restaurantRoutes);
 app.use("/api/cuisines", authenticateToken, cuisineRoutes);
 app.use("/api/staffs", authenticateToken, staffRoutes);
 app.use("/api/users", authenticateToken, userRoutes);
+app.use('/api/tables', authenticateToken,  tableRoutes);
 
-app.use('/api/auth',  authRouter); 
+app.use('/api/login',  authRouter); 
 
 app.get("/:universalURL", (req, res) => {
   res.send("404 URL NOT FOUND");

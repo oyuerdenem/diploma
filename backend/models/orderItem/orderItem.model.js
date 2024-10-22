@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const orderItemSchema = new mongoose.Schema(
   {
-    orderItemId: { 
-      type: Number, 
-      required: true, 
-      unique: true, // Ensure orderItemId is unique
+    orderItemId: {
+      type: Number,
+      required: true,
+      unique: true,
     },
     orderId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -17,15 +17,15 @@ const orderItemSchema = new mongoose.Schema(
       ref: "MenuItem",
       required: true,
     },
-    quantity: { 
-      type: Number, 
-      required: true, 
-      min: [1, 'Quantity must be at least 1'], // Quantity must be a positive integer
+    quantity: {
+      type: Number,
+      required: true,
+      min: [1, "Quantity must be at least 1"],
     },
-    itemPrice: { 
-      type: Number, 
-      required: true, 
-      min: [0, 'Item price must be a positive number'], // Item price must be positive
+    itemPrice: {
+      type: Number,
+      required: true,
+      min: [0, "Item price must be a positive number"],
     },
   },
   {
