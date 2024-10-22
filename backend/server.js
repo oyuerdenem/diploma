@@ -16,13 +16,21 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 app.use(express.json());
 
-app.use("/api/products", authenticateToken, productRoutes);
-app.use("/api/branches", authenticateToken, branchRoutes);
-app.use("/api/restaurants", authenticateToken, restaurantRoutes);
-app.use("/api/cuisines", authenticateToken, cuisineRoutes);
-app.use("/api/staffs", authenticateToken, staffRoutes);
-app.use("/api/users", authenticateToken, userRoutes);
-app.use('/api/tables', authenticateToken,  tableRoutes);
+// app.use("/api/products", authenticateToken, productRoutes);
+// app.use("/api/branches", authenticateToken, branchRoutes);
+// app.use("/api/restaurants", authenticateToken, restaurantRoutes);
+// app.use("/api/cuisines", authenticateToken, cuisineRoutes);
+// app.use("/api/staffs", authenticateToken, staffRoutes);
+// app.use("/api/users", authenticateToken, userRoutes);
+// app.use('/api/tables', authenticateToken,  tableRoutes);
+
+app.use("/api/products", productRoutes);
+app.use("/api/branches", branchRoutes);
+app.use("/api/restaurants", restaurantRoutes);
+app.use("/api/cuisines", cuisineRoutes);
+app.use("/api/staffs", staffRoutes);
+app.use("/api/users", userRoutes);
+app.use('/api/tables',  tableRoutes);
 
 app.use('/api/login',  authRouter); 
 

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { emailRegex, phoneNumberRegex } from "../validators";
+import { emailRegex, phoneNumberRegex } from "../validators.js";
 
 const branchSchema = new mongoose.Schema(
   {

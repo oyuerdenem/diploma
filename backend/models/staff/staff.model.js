@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { emailRegex, phoneNumberRegex } from "../validators";
+import { emailRegex, phoneNumberRegex } from "../validators.js";
 
 const staffSchema = new mongoose.Schema(
   {

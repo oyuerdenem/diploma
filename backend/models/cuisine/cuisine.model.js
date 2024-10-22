@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { cuisineNameRegex } from "../validators";
+import { cuisineNameRegex } from "../validators.js";
 
 const cuisineSchema = new mongoose.Schema(
   {
