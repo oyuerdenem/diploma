@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import Restaurant from "../models/restaurant.model.js";
-import Cuisine from "../models/cuisine.model.js";
+import Restaurant from "../../models/restaurant/restaurant.model.js";
+import Cuisine from "../../models/cuisine/cuisine.model.js";
 
 export const getRestaurants = async (req, res) => {
   try {
@@ -41,7 +41,9 @@ export const createRestaurant = async (req, res) => {
   try {
     const cuisine = await Cuisine.findOne({ cuisineId });
     if (!cuisine) {
-      return res.status(404).json({ success: false, message: "Cuisine not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Cuisine not found" });
     }
 
     // Find the restaurant with the highest ID

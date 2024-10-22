@@ -1,6 +1,6 @@
 // controllers/userController.js
 
-import User from "../models/user.model.js";
+import User from "../../models/user/user.model.js";
 
 // Function to add a new user (staff)
 export const addUser = async (req, res) => {

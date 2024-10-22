@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Cuisine from "../models/cuisine.model.js";
+import Cuisine from "../../models/cuisine/cuisine.model.js";
 
 // Get all cuisines
 export const getCuisines = async (req, res) => {

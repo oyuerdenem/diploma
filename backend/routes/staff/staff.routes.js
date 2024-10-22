@@ -4,7 +4,7 @@ import {
   createStaff,
   loginStaff,
 } from "../controller/staff.controller.js";
-import { authenticateToken } from "../middlewares/authMiddleware.js";
+import { authenticateToken } from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 const checkAdminRole = (req, res, next) => {

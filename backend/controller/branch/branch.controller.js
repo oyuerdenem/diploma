@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import Branch from "../models/branch.model.js";
-import Restaurant from "../models/restaurant.model.js";
+import Branch from "../../models/branch/branch.model.js";
+import Restaurant from "../../models/restaurant/restaurant.model.js";
 
 export const getBranches = async (req, res) => {
   try {
@@ -54,7 +54,9 @@ export const createBranch = async (req, res) => {
     // Step 1: Verify if the restaurantId exists
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
-      return res.status(404).json({ success: false, message: "Restaurant not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Restaurant not found" });
     }
 
     // Step 2: Find the highest branchId and increment it

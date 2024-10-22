@@ -1,7 +1,7 @@
-import Staff from "../models/staff.model.js";
+import Staff from "../../models/staff/staff.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Branch from "../models/branch.model.js";
+import Branch from "../../models/branch/branch.model.js";
 
 export const getStaffs = async (req, res) => {
   try {
