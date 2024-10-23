@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import { connectDB } from "./config/db.js";
 import productRoutes from "./routes/product/product.routes.js";
 import branchRoutes from "./routes/branch/branch.routes.js";
@@ -14,6 +15,8 @@ import tableRoutes from "./routes/table/table.routes.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
+
+app.use(cors()); 
 app.use(express.json());
 
 // app.use("/api/products", authenticateToken, productRoutes);
@@ -22,7 +25,7 @@ app.use(express.json());
 // app.use("/api/cuisines", authenticateToken, cuisineRoutes);
 // app.use("/api/staffs", authenticateToken, staffRoutes);
 // app.use("/api/users", authenticateToken, userRoutes);
-// app.use('/api/tables', authenticateToken,  tableRoutes);
+// app.use('/api/tables', authenticateToken, tableRoutes);
 
 app.use("/api/products", productRoutes);
 app.use("/api/branches", branchRoutes);
@@ -30,9 +33,8 @@ app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/cuisines", cuisineRoutes);
 app.use("/api/staffs", staffRoutes);
 app.use("/api/users", userRoutes);
-app.use('/api/tables',  tableRoutes);
-
-app.use('/api/login',  authRouter); 
+app.use('/api/tables', tableRoutes);
+app.use('/api/login', authRouter); 
 
 app.get("/:universalURL", (req, res) => {
   res.send("404 URL NOT FOUND");

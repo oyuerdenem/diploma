@@ -25,11 +25,11 @@ export const loginUser = async (req, res) => {
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       {
-        expiresIn: '10h', 
+        expiresIn: "10h",
       }
     );
-    
-    res.status(200).json({ success: true, token: `Bearer ${token}` });
+
+    res.status(200).json({ success: true, token: `Bearer ${token}`, userType: user.role});
   } catch (error) {
     console.error("Error on staff login:", error.message);
     res.status(500).json({ success: false, error: "Internal server error" });

@@ -1,4 +1,3 @@
-import LoginRegister from './components/login-register/LoginRegister';
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -6,48 +5,37 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import Login from "./components/login/login-component";
+import ProtectedRoute from "./components/protected-route";
+import Order from "./pages/order";
 
 function App() {
-  const isLoggedIn = window.localStorage.getItem("loggedIn"); // Check if logged in
+  const isLoggedIn = window.localStorage.getItem("loggedIn") === "true"; // Ensure proper comparison
   const userType = window.localStorage.getItem("userType");
 
   return (
     <Router>
       <div className="App">
-        {/* <Navbar isLoggedIn={isLoggedIn} userType={userType} /> */}
-
         <Routes>
-          {/* unauthorized route */}
+          {/* Unauthorized routes */}
           {!isLoggedIn && (
             <>
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<SignUp />} />
               <Route path="/" element={<Login />} />
             </>
           )}
 
           {/* ProtectedRoutes */}
           <Route element={<ProtectedRoute />}>
+            {/* Redirect to home if logged in */}
             <Route path="/login" element={<Navigate to="/" />} />
-            <Route path="/register" element={<Navigate to="/" />} />
-            {userType != "Admin" ? (
+            {userType === "staff" ? (
               <>
-                <Route path="/" element={<Navigate to="/userDetails" />} />
-                <Route path="/userDetails" element={<UserDetails />} />
-                <Route path="/products" element={<Product />} />
-                <Route path="/admin-dashboard" element={<Navigate to="/" />} />
+                <Route path="/orders" element={<Order />} />
               </>
-            ) : (
-              <>
-                <Route path="/" element={<Navigate to="/admin-dashboard" />} />
-                <Route path="/userDetails" element={<Navigate to="/" />} />
-                <Route path="/products" element={<Navigate to="/" />} />
-                <Route path="/admin-dashboard" element={<AdminHome />} />
-              </>
-            )}
+            ) : null}
           </Route>
 
-          <Route path="/about" element={<About />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
