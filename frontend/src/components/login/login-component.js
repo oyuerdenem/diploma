@@ -29,7 +29,7 @@ export default function Login() {
           window.localStorage.setItem("userType", data.userType);
           window.localStorage.setItem("loggedIn", true);
           
-          if (data.userType == "staff") {
+          if (data.userType === "staff") {
             return (window.location.href = "./orders");
           }
         }
