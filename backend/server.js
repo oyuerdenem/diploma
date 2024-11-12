@@ -35,6 +35,7 @@ app.use("/api/staffs", staffRoutes);
 app.use("/api/users", userRoutes);
 app.use('/api/tables', tableRoutes);
 app.use('/api/login', authRouter); 
+app.use('/api/logout', authRouter); 
 
 app.get("/:universalURL", (req, res) => {
   res.send("404 URL NOT FOUND");

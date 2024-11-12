@@ -1,4 +1,3 @@
-// controller/auth.controller.js
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../models/user/user.model.js";
@@ -29,9 +28,37 @@ export const loginUser = async (req, res) => {
       }
     );
 
-    res.status(200).json({ success: true, token: `Bearer ${token}`, userType: user.role});
+    res.cookie("token", token, {
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === "production", 
+      maxAge: 10 * 60 * 60 * 1000, 
+    });
+
+    res.status(200).json({ success: true, token: `Bearer ${token}`, message: "Login successful", userType: user.role });
   } catch (error) {
-    console.error("Error on staff login:", error.message);
+    console.error("Error on login:", error.message);
     res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    if (req.session) {
+      req.session.destroy((err) => {
+        if (err) {
+          return res.status(500).json({ success: false, message: "Error clearing session" });
+        }
+      });
+    }
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", 
+    });
+
+    res.status(200).json({ success: true, message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Error during logout:", error.message);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

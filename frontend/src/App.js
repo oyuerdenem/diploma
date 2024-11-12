@@ -3,47 +3,41 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from "react-router-dom";
-import Login from "./components/login/login-component";
 import ProtectedRoute from "./components/protected-route";
-import Order from "./pages/order";
-// import Sidebar from "./components/sidebar/sidebar";
 import Home from "./pages/client-home/home";
 import Menu from "./pages/client-menu/menu";
+import Login from "./pages/admin-login/login";
+import OrderPage from "./pages/admin-order/order-page";
 
 function App() {
-  const isLoggedIn = window.localStorage.getItem("loggedIn") === "true"; // Ensure proper comparison
+  const isLoggedIn = window.localStorage.getItem("loggedIn") === "true";
   const userType = window.localStorage.getItem("userType");
-  
+
   return (
     <Router>
-      <div className="flex min-h-screen">
-        {/* <Sidebar />/home */}
-        <div className="flex-1 bg-gray-100">
-          <Routes>
-            {!isLoggedIn && (
-              <>
-                <Route path="/login" element={<Login />} />
-                <Route path="/" element={<Login />} />
-              </>
-            )}
+      <Routes>
+        {!isLoggedIn && (
+          <>
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/menu" element={<Menu />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/login" element={<Navigate to="/" />} />
-              {userType === "staff" && (
-                <>
-                  <Route path="/orders" element={<Order />} />
-                </>
-              )}
-            </Route>
+          </>
+        )}
+        <Route path="/" element={<Login />} />
 
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </div>
-      </div>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/menu" element={<Menu />} />
+          {userType === "staff" && (
+            <>
+              <Route path="/orders" element={<OrderPage />} />
+            </>
+          )}
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </Router>
   );
 }
