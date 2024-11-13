@@ -12,7 +12,7 @@ export const getCuisines = async (req, res) => {
 };
 
 export const createCuisine = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, status } = req.body;
 
   try {
     const lastCuisine = await Cuisine.findOne().sort({ cuisineId: -1 });
@@ -22,6 +22,7 @@ export const createCuisine = async (req, res) => {
       cuisineId: newCuisineId,
       name,
       description,
+      status,
     });
 
     await newCuisine.save();

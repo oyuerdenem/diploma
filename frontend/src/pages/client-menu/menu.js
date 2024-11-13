@@ -38,7 +38,7 @@ export default function Menu() {
 
         <div className="scrollable grid grid-cols-2 verflow-auto gap-8 justify-center">
           <ButtonComponent
-            background="home-background.png" // Replace with your actual image path
+            background="home-background.png"
             value="20.9k"
             label="NIGIRI"
             onClick={handleButtonClick}

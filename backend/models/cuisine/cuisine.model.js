@@ -22,6 +22,9 @@ const cuisineSchema = new mongoose.Schema(
       type: String,
       maxlength: 200,
     },
+    status: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

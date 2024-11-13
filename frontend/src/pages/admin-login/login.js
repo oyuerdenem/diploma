@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import background from "./../../components/assets/sidebar-logo.png";
 import SimpleAlert from "../../components/alert/alert";
 
@@ -34,7 +35,7 @@ export default function Login() {
           window.localStorage.setItem("loggedIn", true);
 
           setTimeout(() => {
-            navigate(data.userType === "staff" ? "/orders" : "/home");
+            navigate(data.userType === "staff" ? "/dashboard" : "/home");
           }, 2000);
         } else {
           setError("Нэвтрэх нэр, нууц үг буруу байна. Дахин оролдоно уу.");
@@ -44,61 +45,92 @@ export default function Login() {
   }
 
   return (
-    <div className="auth-wrapper flex flex-col md:flex-row h-screen items-center justify-center bg-white">
+    <motion.div
+      className="auth-wrapper flex flex-col md:flex-row h-screen items-center justify-center bg-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="w-full md:w-1/4 flex justify-center">
-        <img
+        <motion.img
           src={background}
           alt="Background"
           className="max-w-[80%] min-w-[50%] h-full object-cover rounded-lg md:rounded-none"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.5 }}
         />
       </div>
-      <div className="auth-inner w-full md:w-1/4 bg-white p-12">
+      <motion.div
+        className="auth-inner w-full md:w-1/4 bg-white p-12"
+        initial={{ x: -200 }}
+        animate={{ x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <form onSubmit={handleSubmit}>
           <h3 className="text-xl font-light mb-6 text-center">Нэвтрэх</h3>
 
           {/* Display either Success or Error Alert */}
           {(success || error) && (
-            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%] md:w-1/3">
-              <SimpleAlert message={success || error} severity={success ? "success" : "error"} />
-            </div>
+            <motion.div
+              className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%] md:w-1/3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <SimpleAlert
+                message={success || error}
+                severity={success ? "success" : "error"}
+              />
+            </motion.div>
           )}
 
           <div className="mb-5">
             <label className="block mb-2 text-gray-700 text-xs">
               Нэвтрэх нэр
             </label>
-            <input
+            <motion.input
               type="text"
               className="form-control w-full px-3 py-3 border border-gray-300 rounded-lg text-xs font-light text-gray-600 focus:outline-none focus:ring focus:ring-yellow-200"
               placeholder="Хэрэглэгчийн нэр"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             />
           </div>
 
           <div className="mb-7">
             <label className="block mb-2 text-gray-700 text-xs">Нууц үг</label>
-            <input
+            <motion.input
               type="password"
               className="form-control w-full px-3 py-3 border border-gray-300 rounded-lg text-xs font-light text-gray-600 focus:outline-none focus:ring focus:ring-yellow-200"
               placeholder="Нууц үг"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             />
           </div>
 
           <div className="d-grid">
-            <button
+            <motion.button
               type="submit"
               className="w-full py-3 px-4 bg-yellow-400 text-gray-700 text-xs font-light rounded-lg hover:bg-yellow-500"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Нэвтрэх
-            </button>
+            </motion.button>
           </div>
         </form>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
