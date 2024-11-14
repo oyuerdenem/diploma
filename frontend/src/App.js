@@ -17,6 +17,7 @@ import WebSocketService from "./services/websocket-service";
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn") === "true";
   const userType = window.localStorage.getItem("userType");
+  // const token = window.localStorage.getItem("token");
 
   // const [messages, setMessages] = useState([]);
 
@@ -40,16 +41,19 @@ function App() {
       <Routes>
         {!isLoggedIn && (
           <>
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/menu" element={<Menu />} />
           </>
         )}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+
+        {userType === "staff" && <Route path="/dashboard" element={<DashboardPage />} />}
+
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
           <Route path="/menu" element={<Menu />} />
-          {userType === "staff" && (
+          {/* {userType === "staff" && ( */}
             <>
               <Route path="/" element={<OrderPage />} />
               <Route path="/user" element={<OrderPage />} />
@@ -57,7 +61,7 @@ function App() {
               <Route path="/menus" element={<MenuPage />} />
               <Route path="/orders" element={<OrderPage />} />
             </>
-          )}
+          {/* )} */}
           {userType === "admin" && (
             <>
               <Route path="/user" element={<OrderPage />} />

@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FiBell, FiCheckCircle, FiSmile } from "react-icons/fi";
 import OrderCard from "../../components/reusable/order-card";
 import OrderItem from "../../components/reusable/order-item";
 import OrderPayItem from "../../components/reusable/order-pay-item";
 import SearchInput from "../../components/reusable/search-input";
 import OrderFoodItem from "../../components/reusable/order-food-item";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
+  useEffect(() => {
+    console.log("Dashboard");
+  }, []);
   const orderCards = [
     {
       title: "Шинэ захиалга",
@@ -204,7 +207,7 @@ const Dashboard = () => {
           <div className="w-full lg:w-2/4 p-4 bg-white rounded-md overflow-hidden border border-gray-200">
             <p className="text-md font-medium mb-2">Захиалгууд</p>
             <SearchInput />
-            <div className="h-80 lg:h-[400px] overflow-y-auto space-y-1">
+            <div className="h-72 lg:h-[320px] overflow-y-auto space-y-1">
               {orders.map((order, index) => (
                 <OrderItem
                   key={index}
@@ -220,7 +223,7 @@ const Dashboard = () => {
           <div className="w-full lg:w-2/4 p-4 bg-white rounded-md border border-gray-200 overflow-hidden">
             <p className="text-md font-medium mb-2">Захиалгын төлбөрүүд</p>
             <SearchInput />
-            <div className="h-80 lg:h-[400px] overflow-y-auto space-y-1">
+            <div className="h-72 lg:h-[320px] overflow-y-auto space-y-1">
               {paymentItems.map((item, index) => (
                 <OrderPayItem
                   key={index}
@@ -243,7 +246,7 @@ const Dashboard = () => {
               <FiSmile size={20} />
             </div>
           </div>
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-[500px] overflow-y-auto">
             {orderFoods.map((order, index) => (
               <OrderFoodItem
                 key={index}

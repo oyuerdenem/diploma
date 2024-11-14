@@ -30,12 +30,15 @@ export default function Login() {
       .then((data) => {
         if (data.success === true) {
           setSuccess("Амжилттай нэвтэрлээ, түр хүлээнэ үү.");
-          window.localStorage.setItem("token", data.data);
+          window.localStorage.setItem("token", data.token);
           window.localStorage.setItem("userType", data.userType);
           window.localStorage.setItem("loggedIn", true);
-
+          // console.log(data)
+          // console.log(window.localStorage)
           setTimeout(() => {
-            navigate(data.userType === "staff" ? "/dashboard" : "/home");
+            // navigate(data.userType === "staff" ? "/dashboard" : "/home");
+          // console.log('end bas bsn')
+            navigate("/dashboard");
           }, 2000);
         } else {
           setError("Нэвтрэх нэр, нууц үг буруу байна. Дахин оролдоно уу.");

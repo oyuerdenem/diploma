@@ -23,6 +23,7 @@ export default function Menu() {
         const response = await axios.get("http://localhost:8000/api/cuisines");
         console.log({ response });
         const cuisineData = response.data.data.map((cuisine) => ({
+          id: cuisine._id,
           name: cuisine.name,
           description: cuisine.description,
           available: cuisine.status,
@@ -59,7 +60,8 @@ export default function Menu() {
               className={`text-white rounded-full ${
                 row.original.available ? "bg-[#086A69]" : "bg-yellow-400"
               }`}
-              onClick={() => toggleAvailability(row.original.id)}
+              onClick={() => {toggleAvailability(row.original.id) 
+                console.log(row.original)}}
               aria-label="Toggle availability"
             >
               {row.original.available ? (
@@ -151,7 +153,7 @@ export default function Menu() {
 
       <table
         {...getTableProps()}
-        className="min-w-full table-auto border-collapse mt-4 text-xs font-light text-gray-700 bg-white border rounded-lg"
+        className="min-w-full table-auto border-collapse mt-4 text-sm font-light text-gray-700 bg-white border rounded-lg"
       >
         <thead>
           {headerGroups.map((headerGroup) => (

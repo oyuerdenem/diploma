@@ -9,9 +9,9 @@ interface ButtonComponentProps {
 
 const ButtonComponent: React.FC<ButtonComponentProps> = ({ background, value, label, onClick }) => {
   return (
-    <div className="flex items-center justify-end w-full h-full">
+    <div className="flex items-center justify-center w-[36] h-full">
       <button
-        className="w-36 h-36 rounded-md overflow-hidden relative flex flex-col items-center justify-center bg-black shadow-lg border-[0.3px] border-white focus:outline-none"
+        className="w-36 h-36 rounded-md overflow-hidden relative flex flex-col items-center justify-center bg-black hover:shadow-lg border-[0.3px] border-white focus:outline-none"
         onClick={onClick}
       >
         <img

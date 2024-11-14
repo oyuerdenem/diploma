@@ -46,17 +46,20 @@ const Sidebar = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setSuccess("Амжилттай нэвтэрлээ, түр хүлээнэ үү.");
-        console.log("Logout successful:", data.message);
+        setSuccess("Амжилттай системээс гарлаа.");
+        // console.log("Logout successful:", data.message);
         localStorage.removeItem("token");
+        localStorage.setItem("loggedIn", false);
+        localStorage.removeItem("userType");
+        // console.log({ localStorage });
         navigate("/login");
       } else {
         console.error("Logout failed:", data.message);
-        setError("Нэвтрэх нэр, нууц үг буруу байна. Дахин оролдоно уу.");
+        setError("Системээс гарах хүсэлт зөвшөөрөгдсөнгүй. Дахин оролдоно уу.");
       }
     } catch (error) {
       console.error("Error during logout:", error.message);
-      setError("Нэвтрэх нэр, нууц үг буруу байна. Дахин оролдоно уу.");
+      setError("Алдаа гарлаа. Дахин оролдоно уу.");
     }
   };
 
@@ -93,7 +96,7 @@ const Sidebar = () => {
     <div className="bg-white h-full fixed top-0 left-0 w-16 shadow-md z-10 duration-300">
       <div className="pt-6 flex flex-col items-center">
         {(success || error) && (
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%] md:w-1/3">
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 w-[90%] md:w-1/3 z-50">
             <SimpleAlert
               message={success || error}
               severity={success ? "success" : "error"}
@@ -127,7 +130,7 @@ const Sidebar = () => {
 
         <div
           className={`flex flex-col items-center w-full ${
-            userType === "staff" ? "mt-72" : "mt-40"
+            userType === "staff" ? "mt-56" : "mt-40"
           }`}
         >
           <div className="flex items-center justify-center w-16 p-2 mb-1 cursor-pointer text-gray-500 hover:text-gray-700 transition duration-200">

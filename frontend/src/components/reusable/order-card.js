@@ -12,7 +12,7 @@ const OrderCard = ({
   iconBgColor = '#FFFFFF' 
 }) => (
   <div 
-    className="h-28 w-72 rounded-md p-4 flex flex-col justify-between border border-gray-200" 
+    className="h-28 min-w-[230px] max-w-[500px] rounded-md p-4 flex flex-col justify-between border border-gray-200" 
     style={{ backgroundColor: bgColor, color: textColor }}
   >
     <div className="flex justify-between items-start">

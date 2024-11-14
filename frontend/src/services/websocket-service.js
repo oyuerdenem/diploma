@@ -32,7 +32,7 @@ class WebSocketService {
     } else {
       console.log("WebSocket is not open");
     }
-  }
+  } 
 
   close() {
     if (this.socket) {

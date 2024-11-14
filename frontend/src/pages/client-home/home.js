@@ -17,7 +17,7 @@ export default function Home() {
   }, [clicked, navigate]);
 
   return (
-    <div className="relative w-full h-full flex flex-col">
+    <div className="relative w-full h-screen flex flex-col">
       <img
         src={background}
         alt="Background"
