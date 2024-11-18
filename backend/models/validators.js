@@ -8,7 +8,7 @@ export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const cuisineNameRegex = /^[a-zA-Z\s]{2,50}$/; // Allows letters and spaces, between 2 and 50 characters
 
-export const menuItemNameRegex = /^[a-zA-Z0-9\s]{2,50}$/; // Allows alphanumeric characters and spaces, between 2 and 50 characters
+export const categoryNameRegex = /^[a-zA-Z\s]{2,50}$/; // Allows alphanumeric characters and spaces, between 2 and 50 characters
 
 
 // Function to validate phone number

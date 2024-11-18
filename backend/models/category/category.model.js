@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
-import { cuisineNameRegex } from "../validators.js";
+import { categoryNameRegex } from "../validators.js";
 
-const cuisineSchema = new mongoose.Schema(
+const categorySchema = new mongoose.Schema(
   {
-    categoryId: {
+    branchId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: [true, "Category ID is required"],
+      ref: "Branch",
+      required: [true, "Branch ID is required"],
     },
-    cuisineId: {
+    categoryId: {
       type: Number,
       required: true,
       unique: true,
@@ -17,22 +17,22 @@ const cuisineSchema = new mongoose.Schema(
       type: String,
       required: true,
       match: [
-        cuisineNameRegex,
+        categoryNameRegex,
         "Cuisine name must be between 2 and 50 characters long and can only contain letters and spaces",
       ],
       minlength: 2,
-      maxlength: 50,
+      maxlength: 25,
     },
     description: {
       type: String,
       maxlength: 200,
-    }
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const Cuisine = mongoose.model("Cuisine", cuisineSchema);
+const Category = mongoose.model("Category", categorySchema);
 
-export default Cuisine;
+export default Category;

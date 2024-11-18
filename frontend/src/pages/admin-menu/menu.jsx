@@ -14,7 +14,6 @@ export default function Menu() {
     available: true,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [cuisines, setCuisines] = useState([]);
 
   useEffect(() => {
@@ -212,12 +211,11 @@ export default function Menu() {
               onChange={handleInputChange}
               className="w-full p-2 border border-gray-300 mt-1 text-xs font-medium"
             />
-            {/* Other input fields here */}
             <button
               onClick={handleUpdateCuisine}
               className="bg-[#086A69] text-white px-4 py-2 rounded-md text-xs font-light"
             >
-              Save Changes
+              Хадгалах
             </button>
           </motion.div>
         </motion.div>

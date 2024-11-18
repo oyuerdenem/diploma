@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import background from "./../../components/assets/sidebar-logo.png";
-import SimpleAlert from "../../components/alert/alert";
+import SimpleAlert from "../../utils/alert/alert";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -37,7 +37,7 @@ export default function Login() {
           // console.log(window.localStorage)
           setTimeout(() => {
             // navigate(data.userType === "staff" ? "/dashboard" : "/home");
-          // console.log('end bas bsn')
+            // console.log('end bas bsn')
             navigate("/dashboard");
           }, 2000);
         } else {
@@ -74,7 +74,6 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <h3 className="text-xl font-light mb-6 text-center">Нэвтрэх</h3>
 
-          {/* Display either Success or Error Alert */}
           {(success || error) && (
             <motion.div
               className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%] md:w-1/3"

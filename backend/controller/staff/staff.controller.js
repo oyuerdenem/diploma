@@ -15,7 +15,6 @@ export const getStaffs = async (req, res) => {
 
 export const createStaff = async (req, res) => {
   const {
-    staffId,
     name,
     role,
     email,

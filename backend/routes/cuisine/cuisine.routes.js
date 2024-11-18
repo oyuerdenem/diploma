@@ -3,6 +3,7 @@ import {
   getCuisines,
   createCuisine,
   updateCuisine,
+  deleteCuisine,
 } from "../../controller/cuisine/cuisine.controller.js";
 
 const router = express.Router();
@@ -10,5 +11,6 @@ const router = express.Router();
 router.get("/", getCuisines);
 router.post("/", createCuisine);
 router.put("/:id", updateCuisine);
+router.delete("/:id", deleteCuisine);
 
 export default router;

@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import Cuisine from "../../models/cuisine/cuisine.model.js";
+import Category from "../../models/category/category.model.js";
+import Branch from "../../models/branch/branch.model.js";
 
 export const getCuisines = async (req, res) => {
   try {
@@ -12,17 +14,23 @@ export const getCuisines = async (req, res) => {
 };
 
 export const createCuisine = async (req, res) => {
-  const { name, description, status } = req.body;
+  const { categoryId, name, description } = req.body;
 
   try {
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Category not found" });
+    }
     const lastCuisine = await Cuisine.findOne().sort({ cuisineId: -1 });
     const newCuisineId = lastCuisine ? lastCuisine.cuisineId + 1 : 1;
 
     const newCuisine = new Cuisine({
+      categoryId: categoryId,
       cuisineId: newCuisineId,
       name,
-      description,
-      status,
+      description
     });
 
     await newCuisine.save();
@@ -54,25 +62,24 @@ export const updateCuisine = async (req, res) => {
   }
 };
 
-// // Delete a cuisine
-// export const deleteCuisine = async (req, res) => {
-//   const { id } = req.params;
+export const deleteCuisine = async (req, res) => {
+  const { id } = req.params;
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res
-//       .status(404)
-//       .json({ success: false, message: "Invalid cuisine ID" });
-//   }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Invalid cuisine ID" });
+  }
 
-//   try {
-//     await Cuisine.findByIdAndDelete(id);
-//     res
-//       .status(200)
-//       .json({ success: true, message: "Cuisine deleted successfully" });
-//   } catch (error) {
-//     console.error("Error on Delete cuisine:", error.message);
-//     res
-//       .status(500)
-//       .json({ success: false, message: "Failed to delete cuisine" });
-//   }
-// };
+  try {
+    await Cuisine.findByIdAndDelete(id);
+    res
+      .status(200)
+      .json({ success: true, message: "Cuisine deleted successfully" });
+  } catch (error) {
+    console.error("Error on Delete cuisine:", error.message);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to delete cuisine" });
+  }
+};

@@ -52,7 +52,7 @@ export default function Menu() {
           ))}
         </nav>
 
-        <div className="px-5 grid grid-cols-2 gap-y-5 justify-center overflow-y-scroll max-h-[560px]">
+        <div className="px-5 grid grid-cols-2 gap-y-5 justify-center overflow-y-scroll max-h-[540px] pb-5">
           {buttonItems.map((item, index) => (
             <ButtonComponent
               key={index}

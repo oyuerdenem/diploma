@@ -24,7 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const createTable = async (req, res) => {
-  const { tableId, branchId, tableNumber, seats, status } = req.body;
+  const { branchId, tableNumber, seats, status } = req.body;
 
   try {
     const branch = await Branch.findById(branchId);
@@ -43,7 +43,7 @@ export const createTable = async (req, res) => {
       seats,
       status,
     });
-    const publicUrl = "http://172.20.10.4:3000";
+    const publicUrl = "http://192.168.1.4:3000";
     const qrCodeData = {
       tableId: newTable._id, 
       tableNumber: newTable.tableNumber,

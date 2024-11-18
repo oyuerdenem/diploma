@@ -10,7 +10,7 @@ import {
 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import logo from "./../../components/assets/sidebar-logo.png";
-import SimpleAlert from "../../components/alert/alert";
+import SimpleAlert from "../../utils/alert/alert";
 
 const Sidebar = () => {
   const navigate = useNavigate();

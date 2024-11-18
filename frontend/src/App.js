@@ -47,7 +47,6 @@ function App() {
             <Route path="/menu" element={<Menu />} />
           </>
         )}
-
         {userType === "staff" && <Route path="/dashboard" element={<DashboardPage />} />}
 
         <Route element={<ProtectedRoute />}>
