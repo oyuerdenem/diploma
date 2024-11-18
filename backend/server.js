@@ -9,6 +9,7 @@ import cuisineRoutes from "./routes/cuisine/cuisine.routes.js";
 import staffRoutes from "./routes/staff/staff.routes.js";
 import { authenticateToken } from "./middlewares/authMiddleware.js";
 import authRouter from "./routes/auth/auth.route.js";
+import cuisineTypeRoutes from "./routes/cuisineTypes/cuisineTypes.routes.js";
 import userRoutes from "./routes/user/user.routes.js";
 import tableRoutes from "./routes/table/table.routes.js";
 import categoryRoutes from "./routes/category/category.routes.js";
@@ -29,11 +30,14 @@ app.use(express.json());
 // Uncomment these lines if authentication is required for the routes
 app.use("/api/products", authenticateToken, productRoutes);
 app.use("/api/branches", authenticateToken, branchRoutes);
+
+app.use("/api/users", authenticateToken, userRoutes);
+app.use("/api/cuisinetype", authenticateToken, cuisineTypeRoutes);
 app.use("/api/restaurants", authenticateToken, restaurantRoutes);
+
 app.use("/api/cuisines", authenticateToken, cuisineRoutes);
 app.use("/api/categories", authenticateToken, categoryRoutes);
 app.use("/api/staffs", authenticateToken, staffRoutes);
-app.use("/api/users", authenticateToken, userRoutes);
 app.use("/api/tables", authenticateToken, tableRoutes);
 app.use("/api/login", authRouter);
 app.use("/api/logout", authRouter);

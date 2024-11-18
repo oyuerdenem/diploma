@@ -26,7 +26,18 @@ const cuisineSchema = new mongoose.Schema(
     description: {
       type: String,
       maxlength: 200,
-    }
+    },
+    // image: {
+    //   type: String,
+    //   required: [true, "Image is required"],
+    //   validate: {
+    //     validator: function (value) {
+    //       // Regex to match valid image file extensions
+    //       return /\.(jpg|jpeg|png)$/i.test(value);
+    //     },
+    //     message: "Image must be a valid file with .jpg, .jpeg, .png extension",
+    //   },
+    // },
   },
   {
     timestamps: true,

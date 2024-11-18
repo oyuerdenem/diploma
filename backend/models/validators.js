@@ -10,6 +10,7 @@ export const cuisineNameRegex = /^[a-zA-Z\s]{2,50}$/; // Allows letters and spac
 
 export const categoryNameRegex = /^[a-zA-Z\s]{2,50}$/; // Allows alphanumeric characters and spaces, between 2 and 50 characters
 
+export const cuisineTypeNameRegex = /^[a-zA-Z\s]{2,50}$/;
 
 // Function to validate phone number
 export const validatePhoneNumber = (phoneNumber) => {

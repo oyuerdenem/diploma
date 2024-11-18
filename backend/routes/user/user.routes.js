@@ -11,8 +11,6 @@ const router = express.Router();
 
 router.post("/", authenticateToken, checkAdminRole, addUser);
 router.get("/", authenticateToken, checkAdminRole, getUsers);
-// router.post("/", addUser);
-// router.get("/", authenticateToken, getUsers);
 router.get("/:id", authenticateToken, getUserById);
 
 export default router;

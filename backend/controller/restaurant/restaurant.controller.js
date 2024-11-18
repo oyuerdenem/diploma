@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import Restaurant from "../../models/restaurant/restaurant.model.js";
 import Cuisine from "../../models/cuisine/cuisine.model.js";
+import CuisineType from "../../models/cuisineType/cuisineType.model.js";
 
 export const getRestaurants = async (req, res) => {
   try {
-    const restaurants = await Restaurant.find({}).populate("cuisineId");
+    const restaurants = await Restaurant.find({});
     res.status(200).json({ success: true, data: restaurants });
   } catch (error) {
     console.error("Error on Get restaurants:", error.message);
@@ -36,14 +37,14 @@ export const getRestaurantById = async (req, res) => {
 };
 
 export const createRestaurant = async (req, res) => {
-  const { name, cuisineId } = req.body;
+  const { name, cuisineTypeId } = req.body;
 
   try {
-    const cuisine = await Cuisine.findOne({ cuisineId });
+    const cuisine = await CuisineType.findById(cuisineTypeId);
     if (!cuisine) {
       return res
         .status(404)
-        .json({ success: false, message: "Cuisine not found" });
+        .json({ success: false, message: "Cuisine type not found" });
     }
 
     const lastRestaurant = await Restaurant.findOne().sort({ id: -1 });
@@ -52,7 +53,7 @@ export const createRestaurant = async (req, res) => {
     const newRestaurant = new Restaurant({
       id: newId,
       name,
-      cuisineId: cuisine._id,
+      cuisineTypeId: cuisineTypeId,
     });
 
     await newRestaurant.save();

@@ -1,14 +1,26 @@
+import Branch from "../../models/branch/branch.model.js";
 import User from "../../models/user/user.model.js";
 
 export const addUser = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { branchId, username, password, role } = req.body;
 
   if (!["admin", "user", "staff"].includes(role)) {
     return res.status(400).json({ message: 'Invalid role specified' });
   }
+  if(role === "staff" && !branchId) {
+    return res.status(400).json({ message: 'BranchId required.' });
+  }
 
   try {
-    const newUser = new User({ username, password, role });
+    if(role === "staff") {
+      const branch = await Branch.findById(branchId);
+      if (!branch) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Branch not found" });
+      }
+    }
+    const newUser = new User({ branchId, username, password, role });
     await newUser.save();
     res.status(200).json({ success: true, newUser});
   } catch (error) {

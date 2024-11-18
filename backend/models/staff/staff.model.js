@@ -18,16 +18,13 @@ const staffSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["Manager", "Chef", "Waiter", "Cleaner", "Cashier", "Security"],
-      required: [true, "Role is required"],
     },
     email: {
       type: String,
-      required: true,
       match: [emailRegex, "Please enter a valid email address"],
     },
     phoneNumber: {
       type: String,
-      required: true,
       match: [phoneNumberRegex, "Please enter a valid 8-digit phone number"],
     },
     hireDate: {

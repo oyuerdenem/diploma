@@ -51,7 +51,6 @@ const branchSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Open", "Closed", "Under Maintenance"],
-      required: true,
     },
     branchRating: {
       type: Number,
@@ -61,7 +60,6 @@ const branchSchema = new mongoose.Schema(
     deliveryOptions: {
       type: [String],
       enum: ["Pickup", "Delivery", "Dine-in"],
-      required: true,
     },
     images: {
       type: [String],

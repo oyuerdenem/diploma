@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import Cuisine from "../../models/cuisine/cuisine.model.js";
 import Category from "../../models/category/category.model.js";
-import Branch from "../../models/branch/branch.model.js";
+import multer from "multer";
+import fs from "fs";
+import path from "path";
 
 export const getCuisines = async (req, res) => {
   try {
@@ -13,6 +15,23 @@ export const getCuisines = async (req, res) => {
   }
 };
 
+// const upload = multer({
+//   dest: "uploads/", // Temporary directory for uploads
+//   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+//   fileFilter: (req, file, cb) => {
+//     const allowedTypes = /jpeg|jpg|png/;
+//     const extName = allowedTypes.test(
+//       path.extname(file.originalname).toLowerCase()
+//     );
+//     const mimeType = allowedTypes.test(file.mimetype);
+//     if (extName && mimeType) {
+//       cb(null, true);
+//     } else {
+//       cb(new Error("Only .png, .jpg, and .jpeg formats allowed!"));
+//     }
+//   },
+// });
+
 export const createCuisine = async (req, res) => {
   const { categoryId, name, description } = req.body;
 
@@ -21,7 +40,7 @@ export const createCuisine = async (req, res) => {
     if (!category) {
       return res
         .status(404)
-        .json({ success: false, message: "Category not found" });
+        .json({ success: false, message: "Category not found." });
     }
     const lastCuisine = await Cuisine.findOne().sort({ cuisineId: -1 });
     const newCuisineId = lastCuisine ? lastCuisine.cuisineId + 1 : 1;
@@ -40,6 +59,55 @@ export const createCuisine = async (req, res) => {
     res.status(400).json({ success: false, error: "Failed to create cuisine" });
   }
 };
+
+// export const createCuisine = async (req, res) => {
+//   upload.single("image"),
+//     async (req, res) => {
+//       const { categoryId, name, description, image } = req.body;
+//       const imageFile = req.file;
+
+//       try {
+//         const category = await Category.findById(categoryId);
+//         if (!category) {
+//           return res
+//             .status(404)
+//             .json({ success: false, message: "Category not found." });
+//         }
+//         const lastCuisine = await Cuisine.findOne().sort({ cuisineId: -1 });
+//         const newCuisineId = lastCuisine ? lastCuisine.cuisineId + 1 : 1;
+
+//         let imagePath = null;
+
+//         if (imageFile) {
+//           const newFileName = `menu_${newCuisineId}_${name.replace(/\s+/g, "_")}${path.extname(imageFile.originalname)}`;
+//           const menuImagesDir = path.join(__dirname, "..", "menu_images");
+  
+//           fs.mkdirSync(menuImagesDir, { recursive: true });
+  
+//           const finalPath = path.join(menuImagesDir, newFileName);
+//           fs.renameSync(imageFile.path, finalPath);
+  
+//           imagePath = path.relative(path.join(__dirname, ".."), finalPath);
+//         }
+
+//         const newCuisine = new Cuisine({
+//           categoryId: categoryId,
+//           cuisineId: newCuisineId,
+//           name,
+//           description,
+//           image: imagePath,
+//         });
+
+//         await newCuisine.save();
+//         res.status(201).json({ success: true, data: newCuisine });
+//       } catch (error) {
+//         console.error("Error on Create cuisine:", error.message);
+//         res
+//           .status(400)
+//           .json({ success: false, error: "Failed to create cuisine" });
+//       }
+//     };
+// };
 
 export const updateCuisine = async (req, res) => {
   const { id } = req.params;

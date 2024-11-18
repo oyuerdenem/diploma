@@ -13,10 +13,10 @@ const restaurantSchema = new mongoose.Schema(
       minlength: [3, "Restaurant name must be at least 3 characters long"],
       maxlength: [100, "Restaurant name must not exceed 100 characters"],
     },
-    cuisineId: {
+    cuisineTypeId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Cuisine",
-      required: [true, "Cuisine ID is required"],
+      ref: "CuisineType",
+      required: [true, "CuisineType ID is required"],
     },
   },
   {
