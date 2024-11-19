@@ -1,12 +1,66 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { BsCupHot, BsHeart, BsHouseDoor, BsGift } from "react-icons/bs";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import ButtonComponent from "../../components/buttons/client-button.tsx";
+import axios from "axios";
 
 export default function Menu() {
-  const handleButtonClick = () => {
-    console.log("Button clicked!");
+  const [menuItems, setMenuItems] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [selectedNav, setSelectedNav] = useState(0);
+
+  const handleButtonClick = (clickedItem) => {
+    setMenuItems((prevMenuItems) =>
+      prevMenuItems.map((item) =>
+        item.label === clickedItem.label
+          ? { ...item, count: item.count + 1 }
+          : item
+      )
+    );
+  };
+
+  const handleClearCount = (itemToClear) => {
+    const updatedMenuItems = menuItems.map((item) =>
+      item.label === itemToClear.label ? { ...item, count: 0 } : item
+    );
+    setMenuItems(updatedMenuItems);
+  };
+
+  const handleNavBtnClick = (item) => {
+    switch (item.label) {
+      case "СҮШИ":
+        setSelectedNav(2);
+        break;
+      case "Тааламжит":
+        setSelectedNav(4);
+        break;
+      case "Уух зүйл":
+        setSelectedNav(1);
+        break;
+      case "Нэмэлт":
+        setSelectedNav(3);
+        break;
+      default:
+        setSelectedNav(2);
+        break;
+    }
+  };
+
+  useEffect(() => {
+    const newTotal = menuItems.reduce(
+      (sum, item) => sum + item.count * item.value,
+      0
+    );
+    setTotal(newTotal);
+  }, [menuItems]);
+
+  const formatTotal = (value) => {
+    return (
+      new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 0,
+      }).format(value) + "₮"
+    );
   };
 
   const navItems = [
@@ -16,20 +70,28 @@ export default function Menu() {
     { icon: <BsGift size={20} />, label: "Нэмэлт" },
   ];
 
-  const buttonItems = [
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-    { background: "home-background.png", value: "20.9k", label: "NIGIRI" },
-  ];
+  useEffect(() => {
+    const fetchCuisines = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/menuitem/menu"
+        );
+        const menuItemData = response.data.data.map((cuisine) => ({
+          background: "home-background.png",
+          value: cuisine.price,
+          description: cuisine.cuisineName,
+          label: cuisine.cuisineName,
+          category: cuisine.category.categoryId,
+          count: 0,
+        }));
+        setMenuItems(menuItemData);
+      } catch (error) {
+        console.error("Error fetching cuisine data:", error);
+      }
+    };
+
+    fetchCuisines();
+  }, []);
 
   return (
     <div className="relative w-full h-screen flex flex-col">
@@ -44,6 +106,7 @@ export default function Menu() {
           {navItems.map((item, index) => (
             <button
               key={index}
+              onClick={() => handleNavBtnClick(item)}
               className="flex flex-col justify-center items-center h-12 w-12"
             >
               {item.icon}
@@ -53,16 +116,27 @@ export default function Menu() {
         </nav>
 
         <div className="px-5 grid grid-cols-2 gap-y-5 justify-center overflow-y-scroll max-h-[540px] pb-5">
-          {buttonItems.map((item, index) => (
-            <ButtonComponent
-              key={index}
-              background={item.background}
-              value={item.value}
-              label={item.label}
-              onClick={handleButtonClick}
-            />
-          ))}
+          {menuItems
+            .filter(
+              (item) => selectedNav === 0 || item.category === selectedNav
+            )
+            .map((item, index) => (
+              <ButtonComponent
+                key={index}
+                background={item.background}
+                value={item.value}
+                label={item.label}
+                count={item.count}
+                onClick={() => handleButtonClick(item)}
+                onClear={() => handleClearCount(item)}
+              />
+            ))}
         </div>
+      </div>
+      <div className="absolute flex justify-center items-center h-20 bottom-0 w-full bg-gradient-to-t from-gray-600 to-transparent">
+        <button className="m-2 bg-[#FFCB43] text-sm rounded-md py-2 px-5 w-80 uppercase">
+          Захиалах: ({formatTotal(total)})
+        </button>
       </div>
     </div>
   );

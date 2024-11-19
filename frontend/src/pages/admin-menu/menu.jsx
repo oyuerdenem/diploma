@@ -5,27 +5,51 @@ import { motion } from "framer-motion";
 import { FiCheckCircle, FiCircle, FiEdit } from "react-icons/fi";
 import { MdSort } from "react-icons/md";
 import SearchInput from "../../components/reusable/search-input";
+import EditCuisineModal from "./menu-edit/menu-edit";
+import { io } from "socket.io-client";
 
 export default function Menu() {
   const [editableCuisine, setEditableCuisine] = useState(null);
-  const [updatedCuisine, setUpdatedCuisine] = useState({
-    name: "",
-    description: "",
-    available: true,
-  });
+  // const [updatedCuisine, setUpdatedCuisine] = useState({
+  //   name: "",
+  //   description: "",
+  //   available: true,
+  // });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cuisines, setCuisines] = useState([]);
 
+
+  useEffect(() => {
+    const socket = io("http://localhost:8000");
+    socket.on("cuisineUpdated", (updatedCuisineData) => {
+      setCuisines((prevCuisines) =>
+        prevCuisines.map((cuisine) =>
+          cuisine.id === updatedCuisineData.id
+            ? { ...cuisine, ...updatedCuisineData }
+            : cuisine
+        )
+      );
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+  
   useEffect(() => {
     const fetchCuisines = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/cuisines");
-        console.log({ response });
+        const response = await axios.get(
+          "http://localhost:8000/api/menuitem/menu"
+        );
+        // console.log({ response });
         const cuisineData = response.data.data.map((cuisine) => ({
           id: cuisine._id,
-          name: cuisine.name,
-          description: cuisine.description,
+          name: cuisine.cuisineName,
+          description: cuisine.cuisineDesc,
           available: cuisine.status,
+          stock: cuisine.stockNumber,
+          price: cuisine.price / 1000 + "к",
         }));
         setCuisines(cuisineData);
       } catch (error) {
@@ -45,7 +69,8 @@ export default function Menu() {
       },
       { Header: "Бүтээгдэхүүн", accessor: "name" },
       { Header: "Нэмэлт тайлбар", accessor: "description" },
-
+      { Header: "Үнэ", accessor: "price" },
+      { Header: "Нөөц", accessor: "stock" },
       {
         Header: "Нөөцтэй эсэх",
         accessor: "available",
@@ -59,8 +84,10 @@ export default function Menu() {
               className={`text-white rounded-full ${
                 row.original.available ? "bg-[#086A69]" : "bg-yellow-400"
               }`}
-              onClick={() => {toggleAvailability(row.original.id) 
-                console.log(row.original)}}
+              onClick={() => {
+                toggleAvailability(row.original.id);
+                console.log(row.original);
+              }}
               aria-label="Toggle availability"
             >
               {row.original.available ? (
@@ -101,29 +128,17 @@ export default function Menu() {
 
   const openEditModal = (cuisine) => {
     setEditableCuisine(cuisine);
-    setUpdatedCuisine({ ...cuisine });
+    // setUpdatedCuisine({ ...cuisine });
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const handleUpdateCuisine = (updatedCuisine) => {
+    console.log({updatedCuisine});
+    // const updatedData = cuisines.map((cuisine) =>
+    //   cuisine.id === updatedCuisine.id ? updatedCuisine : cuisine
+    // );
+    // setCuisines(updatedData);
     setIsModalOpen(false);
-    setEditableCuisine(null);
-  };
-
-  const handleUpdateCuisine = () => {
-    setCuisines((prevCuisines) =>
-      prevCuisines.map((cuisine) =>
-        cuisine.id === editableCuisine.id
-          ? { ...cuisine, ...updatedCuisine }
-          : cuisine
-      )
-    );
-    closeModal();
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedCuisine((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSort = () => {
@@ -190,36 +205,12 @@ export default function Menu() {
         </tbody>
       </table>
 
-      {isModalOpen && editableCuisine && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center text-light text-md"
-        >
-          <motion.div
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.8 }}
-            className="bg-white p-6 rounded-lg w-96"
-          >
-            <h2>Бүтээгдэхүүний мэдээлэл засах</h2>
-            <input
-              type="text"
-              name="name"
-              value={updatedCuisine.name}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 mt-1 text-xs font-medium"
-            />
-            <button
-              onClick={handleUpdateCuisine}
-              className="bg-[#086A69] text-white px-4 py-2 rounded-md text-xs font-light"
-            >
-              Хадгалах
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
+      <EditCuisineModal
+        isModalOpen={isModalOpen}
+        editableCuisine={editableCuisine}
+        onUpdateCuisine={handleUpdateCuisine}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
