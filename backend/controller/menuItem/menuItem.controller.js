@@ -19,7 +19,7 @@ export const getAllCuisinesWithPrices = async (req, res) => {
   try {
     const menuItems = await MenuItem.find({}).populate({
       path: "cuisineId",
-      select: "name description categoryId",
+      select: "name description categoryId cuisineId",
     });
 
     const categoryItems = await Category.find({}).populate({
@@ -41,6 +41,7 @@ export const getAllCuisinesWithPrices = async (req, res) => {
       );
 
       return {
+        cuisineId: item.cuisineId?.cuisineId || 0,
         cuisineName: item.cuisineId?.name || "Unknown",
         cuisineDesc: item.cuisineId?.description || "Unknown",
         category: category,

@@ -13,6 +13,7 @@ import OrderPage from "./pages/admin-order/order-page";
 import DashboardPage from "./pages/admin-dashboard/dashboard-page";
 import MenuPage from "./pages/admin-menu/menu-page";
 import WebSocketService from "./services/websocket-service";
+import PayPage from "./pages/client-pay/pay";
 
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn") === "true";
@@ -45,6 +46,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/payment" element={<PayPage />} />
           </>
         )}
         {userType === "staff" && <Route path="/dashboard" element={<DashboardPage />} />}
@@ -52,6 +54,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/payment" element={<PayPage />} />
           {/* {userType === "staff" && ( */}
             <>
               <Route path="/" element={<OrderPage />} />

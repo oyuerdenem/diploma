@@ -7,11 +7,13 @@ const orderSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    customerId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",
-      required: true,
-    },
+    orderItemId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "OrderItem",
+        required: true,
+      },
+    ],
     orderDate: {
       type: Date,
       default: Date.now,
