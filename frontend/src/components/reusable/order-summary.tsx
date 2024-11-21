@@ -65,8 +65,6 @@ function OrderSummary({ id, status, date, option, total, time }: OrderSummaryPro
         setData(result);
         setOrderStat(response.data.order.status || "");
         setOrderOption(response.data.order.option || "");
-        console.log(orderStat, orderOption);
-
         setTableNum(response.data.tableQr.qrCodeData.tableNumber || 0);
       } catch (error) {
         console.error("Error fetching order data:", error);

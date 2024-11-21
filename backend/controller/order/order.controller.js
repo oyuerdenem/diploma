@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Cuisine from "../../models/cuisine/cuisine.model.js";
 import Order from "../../models/order/order.model.js";
+import Branch from "../../models/branch/branch.model.js";
 
 export const getOrders = async (req, res) => {
   try {
@@ -14,14 +15,53 @@ export const getOrders = async (req, res) => {
   }
 };
 
+export const getOrdersWithBranch = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate the branch ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Invalid Branch ID" });
+    }
+
+    // Query orders for the specific branch
+    const orders = await Order.find({ branchId: id });
+
+    // Check if orders exist for the branch
+    if (!orders.length) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No orders found for this branch" });
+    }
+
+    // Respond with the orders
+    res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error.message);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to fetch orders" });
+  }
+};
+
+
 export const createOrder = async (req, res) => {
-  const { totalAmount, qrId, option } = req.body;
+  const { totalAmount, qrId, option, branchId } = req.body;
 
   try {
+    const branch = await Branch.findById(branchId);
+    if (!branch) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Branch not found" });
+    }
     const lastOrder = await Order.findOne().sort({ orderId: -1 });
     const newOrderId = lastOrder ? lastOrder.orderId + 1 : 1;
 
     const newOrder = new Order({
+      branchId: branchId,
       orderId: newOrderId,
       totalAmount,
       status: "Pending",

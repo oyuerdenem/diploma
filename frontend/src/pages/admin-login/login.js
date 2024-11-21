@@ -32,13 +32,11 @@ export default function Login() {
           setSuccess("Амжилттай нэвтэрлээ, түр хүлээнэ үү.");
           window.localStorage.setItem("token", data.token);
           window.localStorage.setItem("userType", data.userType);
+          window.localStorage.setItem("branchId", data.branchId);
           window.localStorage.setItem("loggedIn", true);
-          // console.log(data)
-          // console.log(window.localStorage)
           setTimeout(() => {
             // navigate(data.userType === "staff" ? "/dashboard" : "/home");
-            // console.log('end bas bsn')
-            navigate("/dashboard");
+            navigate("/orders");
           }, 2000);
         } else {
           setError("Нэвтрэх нэр, нууц үг буруу байна. Дахин оролдоно уу.");

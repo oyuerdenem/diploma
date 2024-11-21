@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import SearchInput from "../../components/reusable/search-input";
+// import SearchInput from "../../components/reusable/search-input";
 import { FiRefreshCcw } from "react-icons/fi";
 import { motion } from "framer-motion";
 import OrderSummary from "../../components/reusable/order-summary.tsx";
@@ -26,12 +26,13 @@ export default function Order() {
     const day = date.getDate();
     return `${dayOfWeek}, ${month}-р сарын ${day}, ${year}`;
   };  
-
+  const id = window.localStorage.getItem('branchId');
+  console.log(window.localStorage.getItem('branchId'))
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:8000/api/orders", {
+        const response = await axios.get(`http://localhost:8000/api/orders/${id}`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -58,14 +59,6 @@ export default function Order() {
 
     fetchOrders();
   }, []);
-
-  const orderChunks = Array.isArray(orders)
-    ? orders.reduce(
-        (acc, _, i) =>
-          i % 4 === 0 ? acc.push(orders.slice(i, i + 4)) && acc : acc,
-        []
-      )
-    : [];
 
   return (
     <div>

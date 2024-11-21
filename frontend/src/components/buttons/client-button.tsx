@@ -1,6 +1,5 @@
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import logo from "./../assets/home-background.png";
 
 interface ButtonComponentProps {
   background: string;
@@ -22,14 +21,20 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({
   return (
     <div className="flex items-center justify-center w-[36] h-full">
       <button
-        className={`w-36 h-36 rounded-md overflow-hidden relative flex flex-col items-center justify-center bg-black hover:shadow-lg border-[0.3px] border-white focus:outline-none ${count === 0 ? "bg-opacity-30 bg-white" : ''}`}
+        className={`w-36 h-36 rounded-md overflow-hidden relative flex flex-col items-center justify-center bg-black hover:shadow-lg border-[0.3px] border-white focus:outline-none ${
+          count === 0 ? "bg-opacity-30 bg-white" : ""
+        }`}
         onClick={onClick}
       >
-        <img
-          src={logo}
-          alt="Background"
-          className="object-cover w-full h-full"
-        />
+        <div className="relative w-full h-full">
+          <img
+            src={require(`./../assets/${label}.jpg`)}
+            alt="Background"
+            className="object-cover w-full h-full"
+          />
+          <div className="absolute inset-0 bg-black opacity-50"></div>{" "}
+          {/* Black overlay */}
+        </div>
 
         <div className="absolute inset-0 flex flex-col justify-between text-white text-lg font-semibold">
           <p className="text-sm font-extralight p-2 text-start">

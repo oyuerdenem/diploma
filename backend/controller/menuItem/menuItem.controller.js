@@ -41,7 +41,7 @@ export const getAllCuisinesWithPrices = async (req, res) => {
       );
 
       return {
-        cuisineId: item.cuisineId?.cuisineId || 0,
+        cuisineId: item.cuisineId?._id || 0,
         cuisineName: item.cuisineId?.name || "Unknown",
         cuisineDesc: item.cuisineId?.description || "Unknown",
         category: category,

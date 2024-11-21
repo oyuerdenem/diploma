@@ -34,7 +34,7 @@ export const loginUser = async (req, res) => {
       maxAge: 10 * 60 * 60 * 1000, 
     });
 
-    res.status(200).json({ success: true, token: `Bearer ${token}`, message: "Login successful", userType: user.role });
+    res.status(200).json({ success: true, token: `Bearer ${token}`, message: "Login successful", userType: user.role, branchId: user.branchId });
   } catch (error) {
     console.error("Error on login:", error.message);
     res.status(500).json({ success: false, error: "Internal server error" });

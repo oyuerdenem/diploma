@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { useLocation } from "react-router-dom"; 
 import logo from "./../../components/assets/sidebar-logo.png";
 import background from "./../../components/assets/home-background.png";
 import LanguageIcon from "@mui/icons-material/Language";
@@ -7,15 +8,33 @@ import { BsCupHot, BsBasket } from "react-icons/bs";
 
 export default function Home() {
   const [clicked, setClicked] = useState(false);
-  const navigate = useNavigate(); 
+  const location = useLocation(); // Get current URL
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log({location})
+    const params = new URLSearchParams(location.search);
+    const qrData = params.get("data"); 
+    if (qrData) {
+      console.log("QR Data: ", qrData);
+    }
+  }, [location]);
+  
   useEffect(() => {
     if (clicked) {
-      console.log("clicked");
-      setClicked(false);
       navigate("/menu");
     }
   }, [clicked, navigate]);
 
+  const handleDinein = () => {
+    window.localStorage.setItem('option', 'Dinein')
+    setClicked(true);
+  };
+
+  const handleTakeout = () => {
+    window.localStorage.setItem('option', 'Takeout')
+    setClicked(true);
+  };
   return (
     <div className="relative w-full h-screen flex flex-col">
       <img
@@ -43,14 +62,14 @@ export default function Home() {
 
       <div className="relative flex items-center justify-around h-96 z-10 p-10 mt-auto space-x-6">
         <button
-          onClick={() => setClicked(true)}
+          onClick={handleDinein}
           className="w-28 h-28 bg-gray-100 flex items-center justify-center rounded-xl flex-col hover:bg-white hover:scale-105 transition-colors"
         >
           <BsCupHot size={30} />
           <p className="mt-2 text-sm">ЭНД ИДЭХ</p>
         </button>
         <button
-          onClick={() => setClicked(true)}
+          onClick={handleTakeout}
           className="w-28 h-28 bg-yellow-500 flex items-center justify-center rounded-xl flex-col hover:bg-yellow-400 hover:scale-105 transition-colors"
         >
           <BsBasket size={30} />
