@@ -23,9 +23,11 @@
     "npm": "^10.9.0",
     "path": "^0.12.7",
     "qrcode": "^1.5.4",
+    "react-table": "^7.8.0",
     "ws": "^8.18.0"
   },
   "devDependencies": {
+    "@types/react-table": "^7.7.20",
     "nodemon": "^3.1.7"
   }
 }

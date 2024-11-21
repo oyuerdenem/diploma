@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "./../assets/home-background.png";
-import FormatTotal from "../formatter/format-total.tsx";
+import FormatTotal from "../formatter/format-total";
 
 interface OrderButtonProps {
   label: string;
@@ -20,7 +20,7 @@ const OrderButton: React.FC<OrderButtonProps> = ({
       <div className="flex items-start w-4/5">
         <div className="relative flex items-center justify-center bg-white bg-opacity-15 w-14 h-14 overflow-hidden rounded-md">
           <img
-            alt={`${label} image`}
+            alt={label}
             src={logo}
             className="w-12 h-12 rounded-md flex-shrink-0"
           />
@@ -28,7 +28,6 @@ const OrderButton: React.FC<OrderButtonProps> = ({
             {count}
           </p>
         </div>
-
         <div className="flex flex-col mx-2 w-3/4">
           <p className="truncate">{label}</p>
           <p className="text-xs font-light break-words">
@@ -36,9 +35,8 @@ const OrderButton: React.FC<OrderButtonProps> = ({
           </p>
         </div>
       </div>
-
       <div className="flex items-center ml-auto">
-        <FormatTotal value={value * count}/>
+        <FormatTotal value={value * count} />
       </div>
     </div>
   );

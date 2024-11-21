@@ -12,8 +12,11 @@ import authRouter from "./routes/auth/auth.route.js";
 import cuisineTypeRoutes from "./routes/cuisineTypes/cuisineTypes.routes.js";
 import userRoutes from "./routes/user/user.routes.js";
 import tableRoutes from "./routes/table/table.routes.js";
+import tableqrRoutes from "./routes/qr/tableqr.routes.js";
 import categoryRoutes from "./routes/category/category.routes.js";
 import menuItemRoutes from "./routes/menuItem/menuItem.routes.js";
+import orderRoutes from "./routes/order/order.routes.js";
+import orderItemRoutes from "./routes/orderItem/orderItem.routes.js";
 import { WebSocketServer } from "ws";
 import http from "http"; 
 
@@ -33,10 +36,13 @@ app.use("/api/users", authenticateToken, userRoutes);
 app.use("/api/cuisinetype", authenticateToken, cuisineTypeRoutes);
 app.use("/api/restaurants", authenticateToken, restaurantRoutes);
 app.use("/api/menuitem", menuItemRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/orderitems", orderItemRoutes);
 app.use("/api/cuisines", authenticateToken, cuisineRoutes);
 app.use("/api/categories", authenticateToken, categoryRoutes);
 app.use("/api/staffs", authenticateToken, staffRoutes);
 app.use("/api/tables", authenticateToken, tableRoutes);
+app.use("/api/tableqrs", authenticateToken, tableqrRoutes);
 app.use("/api/login", authRouter);
 app.use("/api/logout", authRouter);
 

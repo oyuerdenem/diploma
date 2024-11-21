@@ -6,13 +6,14 @@ import {
   getMenuItems,
   updateMenuItem,
 } from "../../controller/menuItem/menuItem.controller.js";
+import { authenticateToken } from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getMenuItems);
+router.get("/", authenticateToken, getMenuItems);
 router.get("/menu", getAllCuisinesWithPrices);
-router.post("/", createMenuItem);
-router.put("/:id", updateMenuItem);
-router.delete("/:id", deleteMenuItem);
+router.post("/" , authenticateToken, createMenuItem);
+router.put("/:id", authenticateToken, updateMenuItem);
+router.delete("/:id", authenticateToken, deleteMenuItem);
 
 export default router;

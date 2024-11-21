@@ -7,13 +7,6 @@ const orderSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    orderItemId: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "OrderItem",
-        required: true,
-      },
-    ],
     orderDate: {
       type: Date,
       default: Date.now,
@@ -32,6 +25,11 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Pending", "Completed", "Cancelled", "Delivered"],
+      required: true,
+    },
+    option: {
+      type: String,
+      enum: ["Dinein", "Takeout"],
       required: true,
     },
     qrId: {
