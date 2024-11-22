@@ -25,31 +25,41 @@ export default function Order() {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     return `${dayOfWeek}, ${month}-р сарын ${day}, ${year}`;
-  };  
-  const id = window.localStorage.getItem('branchId');
-  console.log(window.localStorage.getItem('branchId'))
+  };
+  const id = window.localStorage.getItem("branchId");
+  console.log(window.localStorage.getItem("branchId"));
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`http://localhost:8000/api/orders/${id}`, {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
+        const response = await axios.get(
+          `http://localhost:8000/api/orders/${id}`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
         const result = response.data.data.map((data) => {
           const date = new Date(data.orderDate);
-          const time = date.getHours() + " цаг " + String(date.getMinutes()).padStart(2, '0') + " мин " + String(date.getSeconds()).padStart(2, '0') + " сек";
-          
+          const time =
+            date.getHours() +
+            " цаг " +
+            String(date.getMinutes()).padStart(2, "0") +
+            " мин " +
+            String(date.getSeconds()).padStart(2, "0") +
+            " сек";
+
           return {
             id: data._id,
+            realTime: data.orderDate,
             status: data.status,
-            date: date, 
+            date: date,
             total: data.totalAmount,
             option: data.option,
             time: time,
           };
-        });        
+        });
 
         setOrders(result);
       } catch (error) {
@@ -69,27 +79,30 @@ export default function Order() {
           transition={{ delay: 0.1, duration: 0.5 }}
         >
           <div className="flex space-x-4 text-xs">
-            <button className="h-8 px-4 w-auto ml-3 bg-[#086A69] border rounded-lg flex justify-center items-center text-white hover:bg-[#086A69] hover:shadow">
+            {/* <button className="h-8 px-4 w-auto ml-3 bg-[#086A69] border rounded-lg flex justify-center items-center text-white hover:bg-[#086A69] hover:shadow">
               Бүх
             </button>
-            {/* <button className="h-8 px-4 w-auto ml-3 border rounded-lg flex justify-center items-center text-gray-700 bg-white hover:shadow">
+            <button className="h-8 px-4 w-auto ml-3 border rounded-lg flex justify-center items-center text-gray-700 bg-white hover:shadow">
               Хийгдэж буй
             </button>
             <button className="h-8 px-4 w-auto ml-3 bg-white border rounded-lg flex justify-center items-center text-gray-700 hover:shadow">
               Хийгдсэн
+            </button> */}
+            <button className="h-8 px-4 w-auto ml-3 bg-[#086A69] border rounded-lg flex justify-center items-center text-white hover:shadow">
+              Захиалгаар
             </button>
             <button className="h-8 px-4 w-auto ml-3 border rounded-lg flex justify-center items-center text-gray-700 bg-white hover:shadow">
               Ширээгээр
             </button>
-            <button className="h-8 px-4 w-auto ml-3 bg-white border rounded-lg flex justify-center items-center text-gray-700 hover:shadow">
-              Захиалгаар
-            </button> */}
           </div>
         </motion.div>
 
         <div className="flex space-x-5 justify-end items-center ml-4 pr-3">
           {/* <SearchInput /> */}
-          <button onClick={handleRefresh} className="bg-yellow-400 flex justify-center items-center h-8 w-8 rounded-full text-gray-700 hover:text-black">
+          <button
+            onClick={handleRefresh}
+            className="bg-yellow-400 flex justify-center items-center h-8 w-8 rounded-full text-gray-700 hover:text-black"
+          >
             <FiRefreshCcw size={14} />
           </button>
         </div>
@@ -103,21 +116,27 @@ export default function Order() {
         <div className="w-full flex flex-col mb-4 px-3">
           {Array.isArray(orders) &&
             orders
+              .sort((a, b) => {
+                const dateTimeA = new Date(`${a.realTime}`);
+                const dateTimeB = new Date(`${b.realTime}`);
+                return dateTimeB - dateTimeA; 
+              })
               .reduce(
                 (acc, _, i) =>
-                  i % 4 === 0 ? acc.push(orders.slice(i, i + 4)) && acc : acc,
+                  i % 3 === 0 ? acc.push(orders.slice(i, i + 3)) && acc : acc,
                 []
               )
               .map((orderRow, rowIndex) => (
                 <div key={rowIndex} className="flex mb-4 space-x-8">
                   {orderRow.map((order, index) => (
                     <OrderSummary
+                      key={order.id}
                       id={order.id}
                       status={order.status}
                       date={formatDate(order.date)}
                       option={order.option}
                       total={order.total}
-                      time={order.time} 
+                      time={order.time}
                     />
                   ))}
                 </div>

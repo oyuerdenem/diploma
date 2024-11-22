@@ -7,22 +7,15 @@ import axios from "axios";
 import { IoTrashBin } from "react-icons/io5";
 import OrderButton from "../../components/buttons/client-order-button.tsx";
 import { useNavigate } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
 import FormatTotal from "../../components/formatter/format-total.tsx";
 
 export default function Menu() {
   const [menuItems, setMenuItems] = useState([]);
   const [total, setTotal] = useState(0);
-  const [selectedNav, setSelectedNav] = useState(0);
+  const [selectedNav, setSelectedNav] = useState('Meal');
   const [openModal, setOpenModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate();
-
-  // const location = useLocation();
-  // const localtotal = location.state.total;
-  // const localitems = location.state.items;
-  // console.log(localitems, localtotal)
-  // console.log(localtotal, localitems)
 
   const navItems = [
     { icon: <BsHouseDoor size={20} />, label: "СҮШИ" },
@@ -72,34 +65,22 @@ export default function Menu() {
   const handleNavBtnClick = (item) => {
     switch (item.label) {
       case "СҮШИ":
-        setSelectedNav(2);
+        setSelectedNav('Meal');
         break;
       case "Тааламжит":
-        setSelectedNav(4);
+        setSelectedNav('');
         break;
       case "Уух зүйл":
-        setSelectedNav(1);
+        setSelectedNav('Drink');
         break;
       case "Нэмэлт":
-        setSelectedNav(3);
+        setSelectedNav('Additional');
         break;
       default:
-        setSelectedNav(2);
+        setSelectedNav('Meal');
         break;
     }
   };
-
-  // useEffect(() => {
-  //   if (localtotal !== 0) {
-  //     setTotal(localtotal);
-  //   } else {
-  //     const newTotal = menuItems.reduce(
-  //       (sum, item) => sum + item.count * item.value,
-  //       0
-  //     );
-  //     setTotal(newTotal);
-  //   }
-  // }, [menuItems, localtotal]); 
 
   useEffect(() => {
       const newTotal = menuItems.reduce(
@@ -123,6 +104,7 @@ export default function Menu() {
           description: cuisine.cuisineDesc,
           label: cuisine.cuisineName,
           category: cuisine.category.categoryId,
+          categoryName: cuisine.category.name,
           count: 0,
         }));
         setMenuItems(menuItemData);
@@ -135,24 +117,6 @@ export default function Menu() {
   }, []);
 
   const [selectedItemsDetails, setSelectedItemsDetails] = useState([]);
-
-  // useEffect(() => {
-  //   let filteredDetails = [];
-    
-  //   if (localitems && localitems.length > 0) {
-  //     filteredDetails = menuItems.filter((item) =>
-  //       localitems.includes(item.id)
-  //     );
-  //   } else if (selectedItems && selectedItems.length > 0) {
-  //     filteredDetails = menuItems.filter((item) =>
-  //       selectedItems.includes(item.id)
-  //     );
-  //   }
-  
-  //   setSelectedItemsDetails(filteredDetails);
-  //   console.log({ selectedItemsDetails: filteredDetails });
-  
-  // }, [selectedItems, menuItems, localitems]);
 
   useEffect(() => {
     let filteredDetails = menuItems.filter((item) =>
@@ -170,13 +134,6 @@ export default function Menu() {
       state: { total: total, items: selectedItemsDetails },
     });
   };
-
-  // useEffect(() => {
-  //   if (localtotal && localitems) {
-  //     setTotal(localtotal);
-  //     setSelectedItemsDetails(localitems);
-  //   }
-  // }, [localtotal, localitems]);
 
   return (
     <div className="relative w-full h-screen flex flex-col">
@@ -206,7 +163,7 @@ export default function Menu() {
         <div className="px-5 grid grid-cols-2 gap-y-5 justify-center overflow-y-scroll max-h-[540px] pb-5">
           {menuItems
             .filter(
-              (item) => selectedNav === 0 || item.category === selectedNav
+              (item) => selectedNav === 0 || item.categoryName === selectedNav
             )
             .map((item, index) => (
               <ButtonComponent

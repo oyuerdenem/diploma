@@ -22,7 +22,14 @@ interface OrderSummaryProps {
   total: number;
   time: string;
 }
-function OrderSummary({ id, status, date, option, total, time }: OrderSummaryProps) {
+function OrderSummary({
+  id,
+  status,
+  date,
+  option,
+  total,
+  time,
+}: OrderSummaryProps) {
   const columns: Column<OrderItem>[] = React.useMemo(
     () => [
       {
@@ -45,6 +52,7 @@ function OrderSummary({ id, status, date, option, total, time }: OrderSummaryPro
   const [orderStat, setOrderStat] = useState("");
   const [orderOption, setOrderOption] = useState("");
   const [data, setData] = useState<OrderItem[]>([]);
+  const [orderCompleted, setOrderCompleted] = useState(false);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -100,16 +108,18 @@ function OrderSummary({ id, status, date, option, total, time }: OrderSummaryPro
         </div>
 
         <div className="flex space-x-2">
-          {orderStat === "Completed" ? (
+          {orderCompleted || orderStat === "Completed" ? (
             <button
-              className="border p-1 rounded-full bg-[#086A69] text-white hover:bg-gray-200"
+              onClick={() => setOrderCompleted(false)}
+              className="border p-1 rounded-full bg-[#086A69] text-white hover:bg-green-900"
               aria-label="Refresh"
             >
               <IoMdCheckmark size={14} />
             </button>
           ) : (
             <button
-              className="border p-1 rounded-full bg-yellow-400 text-gray-700 hover:bg-gray-200"
+              onClick={() => setOrderCompleted(true)}
+              className="border p-1 rounded-full bg-yellow-400 text-gray-700 hover:bg-yellow-500"
               aria-label="Refresh"
             >
               <MdRefresh size={14} />
@@ -118,14 +128,14 @@ function OrderSummary({ id, status, date, option, total, time }: OrderSummaryPro
 
           {orderOption === "Dinein" ? (
             <button
-              className="border p-1 rounded-full bg-white text-gray-700 hover:bg-gray-200"
+              className="border p-1 rounded-full bg-white text-gray-700"
               aria-label="Add Location"
             >
               <MdLocationPin size={14} />
             </button>
           ) : (
             <button
-              className="border p-1 rounded-full bg-red-500 text-white hover:bg-gray-200"
+              className="border p-1 rounded-full bg-red-500 text-white"
               aria-label="Refresh"
             >
               <FiBox size={14} />
@@ -177,7 +187,7 @@ function OrderSummary({ id, status, date, option, total, time }: OrderSummaryPro
             </tbody>
           </table>
         ) : (
-          <p>Loading...</p>
+          <p>Уншиж байна...</p>
         )}
       </div>
       <hr className="border-t border-gray-300" />
@@ -192,8 +202,8 @@ function OrderSummary({ id, status, date, option, total, time }: OrderSummaryPro
         <button className="w-1/2 px-4 py-2 bg-yellow-400 bg-opacity-40 text-gray-700 hover:shadow rounded-md text-xs">
           Дэлгэрэнгүй
         </button>
-        <button className="w-1/2 px-4 py-2 bg-yellow-400 text-gray-700 text-xs rounded-md hover:shadow">
-          Төлбөр төлөх
+        <button disabled className="w-1/2 px-4 py-2 bg-yellow-400 text-gray-700 text-xs rounded-md hover:shadow">
+          Төлбөр төлөгдсөн
         </button>
       </div>
     </div>

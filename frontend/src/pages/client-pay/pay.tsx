@@ -21,11 +21,12 @@ export default function PayPage() {
   const branchId = "673b6eba4db9237d17ac9aec";
   const totalAmount = location.state.total;
   const option = window.localStorage.getItem("option");
-  const [orderId, setOrderId] = useState('');
+  const [orderId, setOrderId] = useState("");
+  let mainOrderId;
 
   const { total = 0, items = [] } = (location.state || {}) as LocationState;
   const [paid, setPaid] = useState(false);
-  console.log({items})
+  console.log({ items });
 
   const navItems = [
     { label: "QPay", img: qpayimg },
@@ -47,6 +48,7 @@ export default function PayPage() {
         totalAmount: totalAmount,
       });
       const id = response.data.data._id;
+      mainOrderId = id;
       setOrderId(id);
     } catch (error) {
       console.error("Error fetching order data:", error);
@@ -59,13 +61,16 @@ export default function PayPage() {
         try {
           const responses = await Promise.all(
             items.map(async (item) => {
-              const response = await axios.post(`http://localhost:8000/api/orderitems`, {
-                orderId: orderId,
-                cuisineId: item.id,
-                quantity: item.count,
-                itemPrice: item.value,
-              });
-              console.log({item})
+              const response = await axios.post(
+                `http://localhost:8000/api/orderitems`,
+                {
+                  orderId: orderId,
+                  cuisineId: item.id,
+                  quantity: item.count,
+                  itemPrice: item.value,
+                }
+              );
+              console.log({ item });
               return response;
             })
           );
@@ -78,7 +83,7 @@ export default function PayPage() {
         console.log("No items to process or orderId is missing.");
       }
     };
-  
+
     fetchData();
   }, [orderId, items]);
   const navigate = useNavigate();
@@ -95,7 +100,11 @@ export default function PayPage() {
     <div className="relative w-full h-screen flex flex-col">
       <nav className="w-full h-14 flex justify-between items-center p-4">
         <MdClear size={25} onClick={handleGoBack} aria-label="Go back" />
-        <div className="text-lg font-light">Төлбөр төлөх</div>
+        {paid ? (
+          <div className="text-lg font-light">#{mainOrderId}</div>
+        ) : (
+          <div className="text-lg font-light">Төлбөр төлөх</div>
+        )}
         <MdRefresh size={25} aria-label="Refresh" onClick={handleRefresh} />
       </nav>
       <div className="w-full bg-[#1E1E1E] text-white flex-grow p-5 flex flex-col items-center">

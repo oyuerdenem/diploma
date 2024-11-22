@@ -18,18 +18,12 @@ import PayPage from "./pages/client-pay/pay";
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn") === "true";
   const userType = window.localStorage.getItem("userType");
-  // const token = window.localStorage.getItem("token");
-
-  // const [messages, setMessages] = useState([]);
-
   useEffect(() => {
     WebSocketService.connect();
 
     WebSocketService.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("Message from server:", data);
-
-      // setMessages((prevMessages) => [...prevMessages, data]);
     };
 
     return () => {
@@ -55,7 +49,6 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/payment" element={<PayPage />} />
-          {/* {userType === "staff" && ( */}
             <>
               <Route path="/" element={<OrderPage />} />
               <Route path="/user" element={<OrderPage />} />
@@ -63,7 +56,6 @@ function App() {
               <Route path="/menus" element={<MenuPage />} />
               <Route path="/orders" element={<OrderPage />} />
             </>
-          {/* )} */}
           {userType === "admin" && (
             <>
               <Route path="/user" element={<OrderPage />} />
@@ -77,13 +69,6 @@ function App() {
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-
-      {/* <div>
-        <h3>WebSocket Messages:</h3>
-        {messages.map((msg, index) => (
-          <p key={index}>{msg.message}</p>
-        ))}
-      </div> */}
     </Router>
   );
 }
