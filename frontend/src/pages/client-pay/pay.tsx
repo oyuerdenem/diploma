@@ -26,7 +26,7 @@ export default function PayPage() {
 
   const { total = 0, items = [] } = (location.state || {}) as LocationState;
   const [paid, setPaid] = useState(false);
-  console.log({ items });
+  // console.log({ items });
 
   const navItems = [
     { label: "QPay", img: qpayimg },
@@ -70,7 +70,7 @@ export default function PayPage() {
                   itemPrice: item.value,
                 }
               );
-              console.log({ item });
+              // console.log({ item });
               return response;
             })
           );

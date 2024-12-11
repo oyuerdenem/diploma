@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 
 const Dashboard = () => {
   useEffect(() => {
-    console.log("Dashboard");
+    // console.log("Dashboard");
   }, []);
   const orderCards = [
     {

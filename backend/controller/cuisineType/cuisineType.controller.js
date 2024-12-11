@@ -24,7 +24,7 @@ export const createCuisineType = async (req, res) => {
       name,
       description
     });
-    console.log({newCuisineType})
+    // console.log({newCuisineType})
 
     await newCuisineType.save();
     res.status(201).json({ success: true, data: newCuisineType });

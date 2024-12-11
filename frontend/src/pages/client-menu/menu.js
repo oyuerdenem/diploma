@@ -96,7 +96,7 @@ export default function Menu() {
         const response = await axios.get(
           "http://localhost:8000/api/menuitem/menu"
         );
-        console.log(response.data.data);
+        // console.log(response.data.data);
         const menuItemData = response.data.data.map((cuisine) => ({
           id: cuisine.cuisineId,
           background: "home-background.png",
@@ -124,7 +124,7 @@ export default function Menu() {
       );
   
     setSelectedItemsDetails(filteredDetails);
-    console.log({ selectedItemsDetails: filteredDetails });
+    // console.log({ selectedItemsDetails: filteredDetails });
   
   }, [selectedItems, menuItems]);
   

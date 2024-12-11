@@ -46,6 +46,69 @@ export const getOrdersWithBranch = async (req, res) => {
   }
 };
 
+export const getOrdersWithTable = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate the branch ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Invalid Branch ID" });
+    }
+
+    // Use aggregation to group orders by tableNumber
+    // const orders = await Order.aggregate([
+    //   { $match: { branchId: mongoose.Types.ObjectId(id) } }, // Match orders with the given branchId
+    //   {
+    //     $lookup: {
+    //       from: "tableqrs", // Collection name of TableQr in MongoDB
+    //       localField: "qrId",
+    //       foreignField: "_id",
+    //       as: "tableDetails",
+    //     },
+    //   },
+    //   { $unwind: "$tableDetails" }, // Flatten the tableDetails array
+    //   {
+    //     $group: {
+    //       _id: "$tableDetails.tableNumber", // Group by tableNumber
+    //       orders: { $push: "$$ROOT" }, // Include all order details in each group
+    //     },
+    //   },
+    //   { $project: { _id: 0, tableNumber: "$_id", orders: 1 } }, // Format the result
+    // ]);
+    // const orders = await Order.aggregate([
+    //   { $match: { branchId: id } }, // Match orders with the given branchId
+    //   // { 
+    //   //   $group: { 
+    //   //     _id: "$qrId", // Group by the `status` field (replace this with your desired field)
+    //   //     totalOrders: { $sum: 1 }, // Count total orders in each group
+    //   //     orders: { $push: "$$ROOT" } // Include all orders in the group
+    //   //   }
+    //   // }
+    // ]);
+
+    const orders = await Order.find({ branchId: id });
+    
+    console.log(orders);
+    
+
+    // Check if any orders exist
+    if (!orders.length) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No orders found for this branch" });
+    }
+
+    // Respond with the grouped orders
+    res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error.message);
+    res.status(500).json({ success: false, error: "Failed to fetch orders" });
+  }
+};
+
+
 
 export const createOrder = async (req, res) => {
   const { totalAmount, qrId, option, branchId } = req.body;

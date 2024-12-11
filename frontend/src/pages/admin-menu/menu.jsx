@@ -86,7 +86,7 @@ export default function Menu() {
               }`}
               onClick={() => {
                 toggleAvailability(row.original.id);
-                console.log(row.original);
+                // console.log(row.original);
               }}
               aria-label="Toggle availability"
             >
@@ -133,7 +133,7 @@ export default function Menu() {
   };
 
   const handleUpdateCuisine = (updatedCuisine) => {
-    console.log({updatedCuisine});
+    // console.log({updatedCuisine});
     // const updatedData = cuisines.map((cuisine) =>
     //   cuisine.id === updatedCuisine.id ? updatedCuisine : cuisine
     // );
