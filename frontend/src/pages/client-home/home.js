@@ -12,7 +12,6 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log({location})
     const params = new URLSearchParams(location.search);
     const qrData = params.get("data"); 
     if (qrData) {

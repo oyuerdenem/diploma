@@ -8,9 +8,7 @@ import OrderFoodItem from "../../components/reusable/order-food-item";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
-  useEffect(() => {
-    console.log("Dashboard");
-  }, []);
+
   const orderCards = [
     {
       title: "Шинэ захиалга",

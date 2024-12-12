@@ -19,33 +19,107 @@ export const getOrdersWithBranch = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Validate the branch ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res
         .status(404)
         .json({ success: false, message: "Invalid Branch ID" });
     }
 
-    // Query orders for the specific branch
     const orders = await Order.find({ branchId: id });
 
-    // Check if orders exist for the branch
     if (!orders.length) {
       return res
         .status(404)
         .json({ success: false, message: "No orders found for this branch" });
     }
 
-    // Respond with the orders
     res.status(200).json({ success: true, data: orders });
   } catch (error) {
     console.error("Error fetching orders:", error.message);
-    res
-      .status(500)
-      .json({ success: false, error: "Failed to fetch orders" });
+    res.status(500).json({ success: false, error: "Failed to fetch orders" });
   }
 };
 
+export const getCompletedOrders = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Invalid Branch ID" });
+    }
+
+    const now = new Date().toISOString().slice(0, 10);
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().slice(0, 10);
+
+    const orders = await Order.find({
+      branchId: id,
+      status: "Completed",
+      createdAt: {
+        $gte: new Date(`${now}T00:00:00.000Z`),
+        $lt: new Date(`${tomorrowStr}T00:00:00.000Z`),
+      },
+    });
+
+    if (!orders.length) {
+      return res
+        .status(200)
+        .json({
+          success: false,
+          message: "No completed orders found for this branch today",
+        });
+    }
+
+    res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error.message);
+    res.status(500).json({ success: false, error: "Failed to fetch orders" });
+  }
+};
+
+export const getUncompletedOrders = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Invalid Branch ID" });
+    }
+
+    const now = new Date().toISOString().slice(0, 10);
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().slice(0, 10);
+    console.log(now, tomorrowStr);
+
+    const orders = await Order.find({
+      branchId: id,
+      status: "Pending",
+      createdAt: {
+        $gte: new Date(`${now}T00:00:00.000Z`),
+        $lt: new Date(`${tomorrowStr}T00:00:00.000Z`),
+      },
+    });
+
+    if (!orders.length) {
+      return res
+        .status(200)
+        .json({
+          success: false,
+          message: "No completed orders found for this branch today",
+        });
+    }
+
+    res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error.message);
+    res.status(500).json({ success: false, error: "Failed to fetch orders" });
+  }
+};
 
 export const createOrder = async (req, res) => {
   const { totalAmount, qrId, option, branchId } = req.body;
@@ -96,9 +170,7 @@ export const updateOrder = async (req, res) => {
     res.status(200).json({ success: true, data: updatedOrder });
   } catch (error) {
     console.error("Error on Update Order:", error.message);
-    res
-      .status(500)
-      .json({ success: false, error: "Failed to update Order" });
+    res.status(500).json({ success: false, error: "Failed to update Order" });
   }
 };
 
@@ -118,8 +190,6 @@ export const deleteOrder = async (req, res) => {
       .json({ success: true, message: "Order deleted successfully" });
   } catch (error) {
     console.error("Error on Delete Order:", error.message);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to delete Order" });
+    res.status(500).json({ success: false, message: "Failed to delete Order" });
   }
 };

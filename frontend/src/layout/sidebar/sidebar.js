@@ -20,7 +20,7 @@ const Sidebar = () => {
   const [success, setSuccess] = useState(null);
 
   const Menus = [
-    { title: "Dashboard", icon: <MdOutlineDashboard size={23} />, staff: true },
+    // { title: "Dashboard", icon: <MdOutlineDashboard size={23} />, staff: true },
     { title: "Menu", icon: <MdMenuBook size={23} />, staff: true },
     { title: "Orders", icon: <MdOutlineContentPaste size={23} />, staff: true },
     {
@@ -130,17 +130,17 @@ const Sidebar = () => {
 
         <div
           className={`flex flex-col items-center w-full ${
-            userType === "staff" ? "mt-56" : "mt-40"
+            userType === "staff" ? "mt-72" : "mt-56"
           }`}
         >
-          <div className="flex items-center justify-center w-16 p-2 mb-1 cursor-pointer text-gray-500 hover:text-gray-700 transition duration-200">
+          {/* <div className="flex items-center justify-center w-16 p-2 mb-1 cursor-pointer text-gray-500 hover:text-gray-700 transition duration-200">
             <div
               className="flex items-center justify-center w-9 h-9 rounded-md"
               onClick={() => handleClick("User")}
             >
               <CgProfile size={23} />
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center justify-center w-16 p-2 mb-1 cursor-pointer text-gray-500 hover:text-gray-700 transition duration-200">
             <div
               className="flex items-center justify-center w-9 h-9 rounded-md"
