@@ -87,7 +87,7 @@ export default function PayPage() {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/menu", { state: { total, items } });
+    navigate("/home", { state: { total, items } });
   };
 
   const handleRefresh = () => {

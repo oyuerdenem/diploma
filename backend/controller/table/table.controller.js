@@ -43,7 +43,7 @@ export const createTable = async (req, res) => {
       seats,
       status,
     });
-    const publicUrl = "http://192.168.1.4:3000";
+    const publicUrl = "http://10.3.203.223:3000";
     const qrCodeData = {
       tableId: newTable._id, 
       tableNumber: newTable.tableNumber,
