@@ -62,6 +62,16 @@ export default function Order() {
           time: time,
         };
       });
+        return {
+          id: data._id,
+          realTime: data.orderDate,
+          status: data.status,
+          date: date,
+          total: data.totalAmount,
+          option: data.option,
+          time: time,
+        };
+      });
 
       setOrders(result);
     } catch (error) {
@@ -281,6 +291,7 @@ export default function Order() {
               .sort((a, b) => {
                 const dateTimeA = new Date(`${a.realTime}`);
                 const dateTimeB = new Date(`${b.realTime}`);
+                return dateTimeB - dateTimeA;
                 return dateTimeB - dateTimeA;
               })
               .reduce(
