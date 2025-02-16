@@ -34,24 +34,24 @@ export default function Order() {
   const fetchAllOrders = async () => {
     try {
       const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+  
       const response = await axios.get(
-        `http://localhost:8000/api/orders/${id}`,
+        `http://localhost:8000/api/orders/${id}`, // Ensure `id` is defined
         {
           headers: {
-            Authorization: `${token}`,
+            Authorization: `Bearer ${token}`, // Add 'Bearer' if needed
           },
         }
       );
+  
       const result = response.data.data.map((data) => {
         const date = new Date(data.orderDate);
-        const time =
-          date.getHours() +
-          " цаг " +
-          String(date.getMinutes()).padStart(2, "0") +
-          " мин " +
-          String(date.getSeconds()).padStart(2, "0") +
-          " сек";
-
+        const time = `${date.getHours()} цаг ${String(date.getMinutes()).padStart(2, "0")} мин ${String(date.getSeconds()).padStart(2, "0")} сек`;
+  
         return {
           id: data._id,
           realTime: data.orderDate,
@@ -62,22 +62,13 @@ export default function Order() {
           time: time,
         };
       });
-        return {
-          id: data._id,
-          realTime: data.orderDate,
-          status: data.status,
-          date: date,
-          total: data.totalAmount,
-          option: data.option,
-          time: time,
-        };
-      });
-
+  
       setOrders(result);
     } catch (error) {
-      console.error("Error fetching cuisine data:", error);
+      console.error("Error fetching orders data:", error);
     }
   };
+  
   const fetchCompletedOrders = async () => {
     try {
       const token = localStorage.getItem("token");
